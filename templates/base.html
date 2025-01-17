@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+    {% endblock title %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block custom_css %}
+    {% endblock custom_css %}
+</head>
+<body>
+    <head>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'medical_record' %}">Medical Record</a></li>
+            </ul>
+        </nav>
+    </head>
+    {% block content %}
+    {% endblock content %}  
+
+
+
+</body>
+</html>
