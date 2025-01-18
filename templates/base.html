@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-    {% endblock title %}
+    <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link
     rel="stylesheet"
@@ -15,7 +14,7 @@
     {% endblock custom_css %}
 </head>
 <body>
-    <head>
+    <header>
         <nav>
             <ul>
               <li><strong>Acme Corp</strong></li>
@@ -37,13 +36,14 @@
               </li>
             </ul>
           </nav>
-    </head>
-    {% block content %}
-    {% endblock content %}  
+    </header>
+
+{% block content %}
+{% endblock content %}  
 
 
+</body>    
 
-</body>
 {% block extra_scripts %}
 {% endblock extra_scripts %}
 </html>

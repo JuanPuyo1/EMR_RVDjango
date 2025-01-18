@@ -16,8 +16,8 @@ class MedCreateView(CreateView):
     form_class = MedicationForm
 
     def form_valid(self, form):
-        patient = Patient.objects.get(id=1)
-        form.instance.patient = patient
+        form.instance.patient = Patient.objects.get(id=1)
+        form.save()
         return redirect('emr:medication_list')
 
 
