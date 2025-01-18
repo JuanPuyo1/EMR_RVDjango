@@ -7,6 +7,10 @@
     {% block title %}
     {% endblock title %}
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
     {% block custom_css %}
     {% endblock custom_css %}
 </head>
@@ -14,10 +18,25 @@
     <head>
         <nav>
             <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'medical_record' %}">Medical Record</a></li>
+              <li><strong>Acme Corp</strong></li>
             </ul>
-        </nav>
+            <ul>
+              <li><a href="#" class="secondary">Services</a></li>
+              <li>
+                <details class="dropdown">
+                  <summary>
+                    Account
+                  </summary>
+                  <ul dir="rtl">
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Logout</a></li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </nav>
     </head>
     {% block content %}
     {% endblock content %}  
@@ -25,4 +44,6 @@
 
 
 </body>
+{% block extra_scripts %}
+{% endblock extra_scripts %}
 </html>

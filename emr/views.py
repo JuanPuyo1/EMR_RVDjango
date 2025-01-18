@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView
-from .models import Medication
+from .models import Medication, Patient
 from .forms import MedicationForm
 
 # Create your views here.
@@ -14,6 +14,11 @@ def medical_record(request):
 class MedCreateView(CreateView):
     template_name = 'emr/medication_form.html'
     form_class = MedicationForm
+
+    def form_valid(self, form):
+        patient = Patient.objects.get(id=1)
+        form.instance.patient = patient
+        return redirect('emr:medication_list')
 
 
 
