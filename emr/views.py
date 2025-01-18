@@ -11,6 +11,11 @@ def index(request):
 def medical_record(request):
     return render(request, 'emr/medical_record.html')
 
+class MedCreateView(CreateView):
+    template_name = 'emr/medication_form.html'
+    form_class = MedicationForm
+
+
 
 class MedInventoryView(ListView):
     model = Medication
