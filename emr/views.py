@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, View
 from .models import Medication, Patient
-from .forms import MedicationForm
+from .forms import MedicationForm, MedicationControlForm
 
 # Create your views here.
 
@@ -26,4 +26,17 @@ class MedInventoryView(ListView):
     model = Medication
     template_name = 'emr/medication_list.html'
     context_object_name = 'medications'
+
+
+class MedControlView(View):
+    def get(self, request):
+        return render(request, 'emr/medication_control_list.html')
+    
+class MedControlListView(View):
+    form_class = MedicationControlForm
+    def get(self, request, date ):
+        medications = Medication.objects.all()
+        form = self.form_class()
+        return render(request, 'emr/medication_control.html', {'medications': medications, 'form': form})
+
 

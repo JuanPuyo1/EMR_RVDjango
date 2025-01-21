@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication
+from .models import Medication, MedicationControl
 from datetime import datetime
 class MedicationForm(forms.ModelForm):
     class Meta:
@@ -37,4 +37,23 @@ class MedicationForm(forms.ModelForm):
             super().__init__(*args, **kwargs)
             self.fields['med_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
     
+
+class MedicationControlForm(forms.ModelForm):
+    class Meta:
+        model = MedicationControl
+        fields = ['med', 'control_date', 'control_location', 'control_observation']
+
+        labels = {
+            'med': 'Medicamento',
+            'control_date': 'Fecha de Control',
+            'control_location': 'Ubicación de Control',
+            'control_observation': 'Observación',
+        }
+
+        widgets = {
+            'med': forms.Select(attrs={'class': 'form-control'}),
+            'control_date': forms.DateTimeInput(attrs={'class': 'form-control', 'data-type': 'datetime-local', 'format': '%Y-%m-%dT%H:%M'}),
+            'control_location': forms.TextInput(attrs={'class': 'form-control'}),
+            'control_observation': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
