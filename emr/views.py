@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View
-from .models import Medication, Patient
+from .models import Medication, Patient, MedicationControl
 from .forms import MedicationForm, MedicationControlForm
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'emr/index.html')
+    return redirect('accounts:login')
 
 def medical_record(request):
     return render(request, 'emr/medical_record.html')
@@ -28,15 +28,29 @@ class MedInventoryView(ListView):
     context_object_name = 'medications'
 
 
+
+
 class MedControlView(View):
     def get(self, request):
-        return render(request, 'emr/medication_control_list.html')
+        return render(request, 'emr/medication_inventory.html')
     
-class MedControlListView(View):
+
+class MedControlRegisterView(View):
     form_class = MedicationControlForm
     def get(self, request, date ):
         medications = Medication.objects.all()
         form = self.form_class()
+        if request.user.is_authenticated:
+            print("LOGEADO")
+        else:
+            print("NO LOGEADO")
+
         return render(request, 'emr/medication_control.html', {'medications': medications, 'form': form})
+
+
+class MedicationControlListView(ListView):
+    model = MedicationControl
+    template_name = 'emr/medication_control_list.html'
+    context_object_name = 'medications'
 
 

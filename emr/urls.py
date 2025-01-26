@@ -8,6 +8,6 @@ urlpatterns = [
     path('medical_record/', views.medical_record, name='medical_record'),
     path('medication_form/', views.MedCreateView.as_view(), name='medication_form'),
     path('medication_list/', views.MedInventoryView.as_view(), name='medication_list'),
-    path('medication_control_list/', views.MedControlView.as_view(), name='medication_control_list'),
-    path('medication_control/<str:date>/', views.MedControlListView.as_view(), name='medication_control'),
+    path('medication_control_list/', views.MedicationControlListView.as_view(), name='medication_control_list'),
+    path('medication_control/<str:date>/', views.MedControlRegisterView.as_view(), name='medication_control'),
 ]
