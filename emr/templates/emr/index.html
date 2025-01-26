@@ -16,19 +16,24 @@
 {% endblock custom_css %}
 
 {% block content %}
+
+
 <article>
 <details>
-    <summary id="enfermeria">Enfermería</summary>
+    <summary id="enfermeria">ENFERMERÍA</summary>
     <ul>
         <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
         <li><a href="{% url 'emr:medication_list' %}">Inventario de Medicamentos</a></li>
+        <li><a href="">Registro de Presion Arterial</a></li>
+        <li><a href="">Registro de Comidas</a></li>
+        <li><a href="">Comidas</a></li>
     </ul>
 </details>
 </article>
 
 <article>
 <details>
-    <summary>Terapia Ocupacional</summary>
+    <summary>TERAPIA OCCUPACIONAL</summary>
     <ul>
         <li><a href="">Registrar Valoración</a></li>
         <li><a href="">Registrar Terapia</a></li>
@@ -38,7 +43,7 @@
 
 <article>
 <details>
-    <summary>Medicina General</summary>
+    <summary>MEDICINA GENERAL</summary>
     <ul>
         <li><a href="">Registro de Historia Clínica</a></li>
         <li><a href="">Registro de Exámenes</a></li>
