@@ -52,8 +52,15 @@ class MedicationControlForm(forms.ModelForm):
 
         widgets = {
             'med': forms.Select(attrs={'class': 'form-control'}),
-            'control_date': forms.DateTimeInput(attrs={'class': 'form-control', 'data-type': 'datetime-local', 'format': '%Y-%m-%dT%H:%M'}),
+            'control_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
             'control_location': forms.TextInput(attrs={'class': 'form-control'}),
             'control_observation': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['med'].queryset = Medication.objects.all().order_by('med_name')
+            self.fields['control_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
 
