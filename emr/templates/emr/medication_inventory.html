@@ -9,15 +9,19 @@
 <nav aria-label="breadcrumb">
     <ul>
       <li><a href="{% url 'emr:index' %}">Inicio</a></li>
-      <li><a href="{% url 'emr:medication_list' %}">Inventario de Medicamentos</a></li>
+      <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
     </ul>
   </nav>
 
 {% endblock breadcrumb %}
 
 {% block content %}
-<h1>Inventario de Medicamentos</h1>
+
+<div class="d-flex justify-content-end">
 <button class="secondary" onclick="window.location.href='{% url 'emr:medication_form' %}'">Agregar Medicamento</button>
+</div>
+
+<h1>Inventario de Medicamentos</h1>
 
 </button>
 <div class="overflow-auto">

@@ -12,10 +12,14 @@ def index(request):
 def medical_record(request):
     return render(request, 'emr/medical_record.html')
 
+'''
 
+Medication Inventory
+
+'''
 
 class MedCreateView(CreateView):
-    template_name = 'emr/medication_form.html'
+    template_name = 'emr/medication_inventory_form.html'
     form_class = MedicationForm
 
     def form_valid(self, form):
@@ -87,10 +91,15 @@ class MedControlDetailsView(View):
         record = MedicationControl.objects.get(id=record_id)
         return render(request, self.template_name, {'record': record})
 
-class MedControlRegisterView(View):
+class MedControlFormView(View):
     form_class = MedicationControlForm
-    def get(self, request, date ):
-        medications = Medication.objects.all()
+    template_name = 'emr/medication_control_form.html'
+    def get(self, request):      
         form = self.form_class()
-
-        return render(request, self.template_name, {'medications': medications, 'form': form})
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('emr:medication_control_list')

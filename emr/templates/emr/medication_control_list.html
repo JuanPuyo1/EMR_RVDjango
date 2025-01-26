@@ -18,11 +18,9 @@
 
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="secondary" type="submit">Agregar Registro</button>
-</form>
+<div class="d-flex justify-content-end">
+<button class="secondary" href="{% url 'emr:medication_control_form' %}">Agregar Registro</button>
+</div>
 
 
 <span id="currentWeekDisplay" class="mx-3">

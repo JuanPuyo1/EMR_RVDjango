@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1>Inventario de Medicamentos, Agregar Medicamento</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h1>Inventario de Medicamentos, Agregar Medicamento</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+    
+</script>
+{% endblock extra_scripts %}
