@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View
 from .models import Medication, Patient, MedicationControl
 from .forms import MedicationForm, MedicationControlForm
+from datetime import date, timedelta
 
 # Create your views here.
 
@@ -11,6 +12,8 @@ def index(request):
 def medical_record(request):
     return render(request, 'emr/medical_record.html')
 
+
+
 class MedCreateView(CreateView):
     template_name = 'emr/medication_form.html'
     form_class = MedicationForm
@@ -18,21 +21,61 @@ class MedCreateView(CreateView):
     def form_valid(self, form):
         form.instance.patient = Patient.objects.get(id=1)
         form.save()
-        return redirect('emr:medication_list')
+        return redirect('emr:medication_inventory')
 
 
 
 class MedInventoryView(ListView):
     model = Medication
-    template_name = 'emr/medication_list.html'
+    template_name = 'emr/medication_inventory.html'
     context_object_name = 'medications'
 
 
 
 
 class MedControlView(View):
+    template_name = 'emr/medication_control_list.html'
+    
     def get(self, request):
-        return render(request, 'emr/medication_inventory.html')
+        # Get week offset from query parameters, default to 0 (current week)
+        week_offset = int(request.GET.get('week', 0))
+        print(week_offset)
+        # Calculate the date range for the requested week
+        today = date.today()
+        base_monday = today - timedelta(days=today.weekday())  # Get current week's Monday
+        start_of_week = base_monday + timedelta(weeks=week_offset)
+        print(start_of_week)
+        end_of_week = start_of_week + timedelta(days=6)  # Friday (4 days after Monday)
+        print(end_of_week)
+        # Get all medications
+        medications = Medication.objects.all()
+        print(medications)
+        # Get records for the specified week
+        records = MedicationControl.objects.filter(
+            control_date__range=(start_of_week, end_of_week)
+        )
+        print(records)
+        # Organize records by day
+        weekly_data = {day: [] for day in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]}
+        for record in records:
+            weekday = record.control_date.weekday()
+            if weekday < 5:  # Only process Monday through Friday
+                weekly_data[list(weekly_data.keys())[weekday]].append(record)
+        
+        # Format dates for display
+        week_display = {
+            'start': start_of_week.strftime('%d/%m/%Y'),
+            'end': end_of_week.strftime('%d/%m/%Y'),
+            'offset': week_offset
+        }
+        
+        context = {
+            'medications': medications,
+            'weekly_data': weekly_data,
+            'week_display': week_display
+        }
+        
+        return render(request, self.template_name, context)
     
 
 class MedControlRegisterView(View):
@@ -41,12 +84,4 @@ class MedControlRegisterView(View):
         medications = Medication.objects.all()
         form = self.form_class()
 
-        return render(request, 'emr/medication_control.html', {'medications': medications, 'form': form})
-
-
-class MedicationControlListView(ListView):
-    model = MedicationControl
-    template_name = 'emr/medication_control_list.html'
-    context_object_name = 'medications'
-
-
+        return render(request, self.template_name, {'medications': medications, 'form': form})

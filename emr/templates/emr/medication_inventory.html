@@ -1,184 +1,55 @@
 {% extends "base.html" %}
+
 {% block title %}
-<h1>Control de Medicamentos</h1>
+<h1>Inventario de Medicamentos</h1>
 {% endblock title %}
 
-{% block extra_css %}
-<style>
-    .table th {
-        text-align: center;
-        background-color: #f8f9fa;
-    }
-    
-    .table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-    
-    #currentWeekDisplay {
-        font-size: 1.2em;
-        font-weight: bold;
-    }
-    
-    .med-control-btn {
-        background-color: rgba(0, 123, 255, 0.1);
-        border: 1px solid rgba(0, 123, 255, 0.5);
-        color: #0056b3;
-        padding: 8px;
-        border-radius: 4px;
-        width: 100%;
-        transition: all 0.3s ease;
-    }
-    
-    .med-control-btn:hover {
-        background-color: rgba(0, 123, 255, 0.2);
-        border-color: #0056b3;
-    }
-    
-    .calendar-cell {
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
-    
-</style>
-{% endblock extra_css %}
+{% block breadcrumb %}
+
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_list' %}">Inventario de Medicamentos</a></li>
+    </ul>
+  </nav>
+
+{% endblock breadcrumb %}
 
 {% block content %}
-<div class="container">
-    <div class="row mb-3">
-        <div class="col">
-            <button id="prevWeek" class="btn btn-primary">&lt; Semana Anterior</button>
-            <span id="currentWeekDisplay" class="mx-3"></span>
-            <button id="nextWeek" class="btn btn-primary">Siguiente Semana &gt;</button>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th id="mon">Lunes</th>
-                        <th id="tue">Martes</th>
-                        <th id="wed">Miércoles</th>
-                        <th id="thu">Jueves</th>
-                        <th id="fri">Viernes</th>
-                    </tr>
-                </thead>
-                <tbody id="calendarBody">
-                    <!-- Days will be filled by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+<h1>Inventario de Medicamentos</h1>
+<button class="secondary" onclick="window.location.href='{% url 'emr:medication_form' %}'">Agregar Medicamento</button>
+
+</button>
+<div class="overflow-auto">
+<table>
+    <thead>
+      <tr>
+        <th scope="col">Nombre Medicamento</th>
+        <th scope="col">Cantidad Recibida</th>
+        <th scope="col">Fecha de Entrega</th>
+        <th scope="col">Cambio de Medicamento</th>
+        <th scope="col">Medico que ordena el Cambio</th>
+        <th scope="col">Observación (Firma)</th>
+     </tr>
+    </thead>
+    <tbody>
+        {% for medication in medications %}
+        <tr>
+            <td>{{ medication.med_name }}</td>
+            <td>{{ medication.med_quantity }}</td>
+            <td>{{ medication.med_date }}</td>
+            <td>{{ medication.med_change }}</td>
+            <td>{{ medication.referer }}</td>
+            <td>{{ medication.med_observation }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 {% endblock content %}
 
 {% block extra_scripts %}
 <script>
-class WeekCalendar {
-    constructor() {
-        this.currentDate = new Date();
-        this.initializeCalendar();
-        this.setupEventListeners();
-    }
-
-    initializeCalendar() {
-        this.moveToCurrentWeek();
-        this.renderCalendar();
-    }
-
-    setupEventListeners() {
-        document.getElementById('prevWeek').addEventListener('click', () => {
-            this.currentDate.setDate(this.currentDate.getDate() - 7);
-            this.renderCalendar();
-        });
-
-        document.getElementById('nextWeek').addEventListener('click', () => {
-            this.currentDate.setDate(this.currentDate.getDate() + 7);
-            this.renderCalendar();
-        });
-    }
-
-    moveToCurrentWeek() {
-        // Move to Monday of current week
-        while (this.currentDate.getDay() !== 1) {
-            this.currentDate.setDate(this.currentDate.getDate() - 1);
-        }
-    }
-
-    formatDate(date) {
-        return date.toLocaleDateString('es-ES', { 
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric'
-        });
-    }
-
-    renderCalendar() {
-        // Update header dates
-        const days = ['mon', 'tue', 'wed', 'thu', 'fri'];
-        const weekDates = [];
-        
-        for (let i = 0; i < 5; i++) {
-            const date = new Date(this.currentDate);
-            date.setDate(this.currentDate.getDate() + i);
-            weekDates.push(date);
-            const dateStr = this.formatDate(date);
-            document.getElementById(days[i]).textContent = 
-                `${['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'][i]} ${dateStr}`;
-        }
-
-        // Update week display
-        const weekStart = this.formatDate(weekDates[0]);
-        const weekEnd = this.formatDate(weekDates[4]);
-        document.getElementById('currentWeekDisplay').textContent = 
-            `Semana del ${weekStart} al ${weekEnd}`;
-
-        // Create single row with buttons for each day
-        const tbody = document.getElementById('calendarBody');
-        tbody.innerHTML = '';
-        
-        const row = document.createElement('tr');
-        
-        // Create cells for each day
-        for (let day = 0; day < 5; day++) {
-            const cell = document.createElement('td');
-            cell.dataset.date = weekDates[day].toISOString().split('T')[0];
-            cell.style.height = '80px';
-            cell.className = 'calendar-cell';
-            
-            // Create button for medication control
-            const button = document.createElement('button');
-            button.className = 'med-control-btn';
-            button.textContent = 'Registrar control de medicamentos';
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.handleMedicationControl(cell.dataset.date);
-            });
-            
-            cell.appendChild(button);
-            row.appendChild(cell);
-        }
-        
-        tbody.appendChild(row);
-    }
-
-    handleMedicationControl(date) {
-        console.log(`Medication Control for: ${date}`);
-        window.location.href = `/medication_control/${date}`;
-        // Add your logic here to handle the medication control registration
-        // For example, redirect to a form or open a modal
-    }
-}
-
-// Initialize calendar when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const calendar = new WeekCalendar();
-});
+    console.log("Medication List")
 </script>
 {% endblock extra_scripts %}

@@ -1,30 +1,91 @@
 {% extends "base.html" %}
+{% block title %}
+<h1>Control de Medicamentos</h1>
+{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
 
 {% block content %}
-<h1>Medication Control List</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="secondary" type="submit">Agregar Registro</button>
+</form>
 
 
-<table>
-    <thead>
-        <tr>
-            <th>Medication</th>
-            <th>Quantity</th>
-            <th>Date</th>
-            <th>Location</th>
-            <th>Observation</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for medication in medications %}
-        <tr>
-            <td>{{ medication.med.med_name }}</td>
-            <td>{{ medication.med.med_quantity }}</td>
-            <td>{{ medication.control_date }}</td>
-            <td>{{ medication.control_location }}</td>
-            <td>{{ medication.control_observation }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+<span id="currentWeekDisplay" class="mx-3">
+    Semana del {{ week_display.start }} al {{ week_display.end }}
+</span>
+<div role="group">
+   
+       
+            <button id="prevWeek" class="btn btn-primary">&lt; Semana Anterior</button>
+            
+            <button id="nextWeek" class="btn btn-primary">Siguiente Semana &gt;</button>
+       
+    </div>
+    
+    <div class="overflow-auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>Medicamento</th>
+                    {% for day in weekly_data.keys %}
+                        <th>{{ day }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for medication in medications %}
+                <tr>
+                    <td>{{ medication.med_name }} ({{ medication.med_quantity }})</td>
+                    {% for day, records in weekly_data.items %}
+                        <td>
+                            {% for record in records %}
+                                {% if record.med == medication %}
+                                    <a href="{% url 'emr:medication_control' record.id %}">
+                                    {{ record.control_date|date:"H:i" }} - {{ record.control_location }}
+                                    <br>
+                                    {{ record.control_observation }}
+                                    <br>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
 
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentOffset = {{ week_display.offset }};
+        
+        document.getElementById('prevWeek').addEventListener('click', function() {
+            window.location.href = `?week=${currentOffset - 1}`;
+        });
+        
+        document.getElementById('nextWeek').addEventListener('click', function() {
+            window.location.href = `?week=${currentOffset + 1}`;
+        });
+    });
+</script>
+{% endblock extra_scripts %}
