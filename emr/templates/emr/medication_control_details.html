@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+<h1>Medication Control Details</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
+      <li><a href="{% url 'emr:medication_control_details' record.id %}">Detalles del Control</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<h1>Detalles del Control de Medicamentos del {{ record.control_date }}</h1>
+
+<div class="overflow-auto">
+<input type="text" value="Medicamento: {{ record.med.med_name }}" readonly>
+<input type="text" value="Fecha: {{ record.control_date }}" readonly>
+<input type="text" value="Ubicación: {{ record.control_location }}" readonly>
+<input type="text" value="Observación: {{ record.control_observation }}" readonly>
+</div>
+{% endblock content %}

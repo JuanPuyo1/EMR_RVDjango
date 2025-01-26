@@ -9,5 +9,6 @@ urlpatterns = [
     path('medication_form/', views.MedCreateView.as_view(), name='medication_form'),
     path('medication_inventory/', views.MedInventoryView.as_view(), name='medication_inventory'),
     path('medication_control/<str:date>/', views.MedControlRegisterView.as_view(), name='medication_control'),
+    path('medication_control_details/<int:record_id>/', views.MedControlDetailsView.as_view(), name='medication_control_details'),
     path('medication_control_list/', views.MedControlView.as_view(), name='medication_control_list'),
 ]

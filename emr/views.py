@@ -31,7 +31,10 @@ class MedInventoryView(ListView):
     context_object_name = 'medications'
 
 
+'''
+Medication Control List
 
+'''
 
 class MedControlView(View):
     template_name = 'emr/medication_control_list.html'
@@ -77,6 +80,12 @@ class MedControlView(View):
         
         return render(request, self.template_name, context)
     
+
+class MedControlDetailsView(View):
+    template_name = 'emr/medication_control_details.html'
+    def get(self, request, record_id):
+        record = MedicationControl.objects.get(id=record_id)
+        return render(request, self.template_name, {'record': record})
 
 class MedControlRegisterView(View):
     form_class = MedicationControlForm
