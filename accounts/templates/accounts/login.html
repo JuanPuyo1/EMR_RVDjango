@@ -1,11 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% block custom_css %}
+    <link rel="stylesheet" href="{% static 'accounts/style.css' %}">
+{% endblock custom_css %}
 
 {% block content %}
-<h1>Login</h1>
+
+<main class="container">
+<h1>Inicio de sesión</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</main>
 {% endblock content %}
 
