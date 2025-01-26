@@ -10,18 +10,59 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     >
+    <style>
+      :root {
+          --background-color: white !important;
+      }
+      
+      body {
+          background-color: white !important;
+      }
+      
+      details.dropdown > ul {
+          background-color: white !important;
+      }
+  </style>
     {% block custom_css %}
     {% endblock custom_css %}
 </head>
 <body>
+
     {% if user.is_authenticated %}
-    <header>
+    
+    <header class="container">
         <nav>
             <ul>
-              <li><strong>Acme Corp</strong></li>
+              <li><strong>Sistema de Gestión</strong></li>
             </ul>
             <ul>
-              <li><a href="#" class="secondary">Services</a></li>
+              <li>
+                <details class="dropdown">
+                  <summary>Enfermería</summary>
+                  <ul dir="rtl">
+                  <li><a href="#" class="secondary">Inventario de Medicamentos</a></li>
+                  <li><a href="#" class="secondary">Control de Medicamentos</a></li>
+                </ul>
+              </details>
+              </li>
+              <li>
+                <details class="dropdown">
+                  <summary>TO</summary>
+                  <ul dir="rtl">
+                  <li><a href="#" class="secondary">Historia Clínica</a></li>
+                  <li><a href="#" class="secondary">Registro Valoración</a></li>
+                </ul>
+              </details>
+              </li>
+              <li>
+                <details class="dropdown">
+                  <summary>Medicina General</summary>
+                  <ul dir="rtl">
+                    <li><a href="#" class="secondary">Historia Clínica</a></li>
+                    <li><a href="#" class="secondary">Registro Valoración</a></li>
+                  </ul>
+                </details>
+              </li>
               <li>
                 <details class="dropdown">
                   <summary>
@@ -39,12 +80,14 @@
           </nav>
     </header>
     {% endif %}
-{% block content %}
-{% endblock content %}  
+    <main class="container">
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
+        {% block content %}
 
-
+        {% endblock content %}
+    </main>
 </body>    
-
 {% block extra_scripts %}
 {% endblock extra_scripts %}
 </html>

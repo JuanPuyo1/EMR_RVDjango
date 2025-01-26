@@ -11,7 +11,7 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         print("GET")
         if request.user.is_authenticated:
-            return redirect('emr:medication_list') 
+            return redirect('emr:index') 
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
     
@@ -23,7 +23,7 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
-                return redirect('emr:medication_list')  
+                return redirect('emr:index')  
         return render(request, self.template_name, {
             'form': form,
             'error': 'Invalid username or password'

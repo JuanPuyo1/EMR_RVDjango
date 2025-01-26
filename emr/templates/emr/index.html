@@ -1,5 +1,48 @@
 {% extends 'base.html' %}
 
-{% block content %}
 
+
+{% block title %}
+<title>Inicio</title>
+{% endblock title %}
+
+
+{% block custom_css %}
+<style>
+    #enfermeria {
+        font-weight: bold;
+    }
+</style>
+{% endblock custom_css %}
+
+{% block content %}
+<article>
+<details>
+    <summary id="enfermeria">Enfermería</summary>
+    <ul>
+        <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
+        <li><a href="{% url 'emr:medication_list' %}">Inventario de Medicamentos</a></li>
+    </ul>
+</details>
+</article>
+
+<article>
+<details>
+    <summary>Terapia Ocupacional</summary>
+    <ul>
+        <li><a href="">Registrar Valoración</a></li>
+        <li><a href="">Registrar Terapia</a></li>
+    </ul>
+</details>
+</article>
+
+<article>
+<details>
+    <summary>Medicina General</summary>
+    <ul>
+        <li><a href="">Registro de Historia Clínica</a></li>
+        <li><a href="">Registro de Exámenes</a></li>
+    </ul>
+</details>
+</article>
 {% endblock %}

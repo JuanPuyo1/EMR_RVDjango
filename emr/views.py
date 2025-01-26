@@ -6,7 +6,7 @@ from .forms import MedicationForm, MedicationControlForm
 # Create your views here.
 
 def index(request):
-    return redirect('accounts:login')
+    return render(request, 'emr/index.html')
 
 def medical_record(request):
     return render(request, 'emr/medical_record.html')
@@ -40,10 +40,6 @@ class MedControlRegisterView(View):
     def get(self, request, date ):
         medications = Medication.objects.all()
         form = self.form_class()
-        if request.user.is_authenticated:
-            print("LOGEADO")
-        else:
-            print("NO LOGEADO")
 
         return render(request, 'emr/medication_control.html', {'medications': medications, 'form': form})
 
