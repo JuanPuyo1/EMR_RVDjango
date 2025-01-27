@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View
-from .models import Medication, Patient, MedicationControl
-from .forms import MedicationForm, MedicationControlForm
+from .models import Medication, Patient, MedicationControl, ArterialPressure
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm
 from datetime import date, timedelta
 
 # Create your views here.
@@ -103,3 +103,34 @@ class MedControlFormView(View):
         if form.is_valid():
             form.save()
             return redirect('emr:medication_control_list')
+        
+
+
+'''
+    Arterial Pressure
+
+'''
+
+class ArterialPressureView(ListView):
+    model = ArterialPressure
+    template_name = 'emr/arterial_pressure_list.html'
+    context_object_name = 'arterial_pressures'
+
+    def get_queryset(self):
+        return ArterialPressure.objects.all().order_by('-arterial_pressure_date')
+
+class ArterialPressureFormView(View):
+    form_class = ArterialPressureForm
+    template_name = 'emr/arterial_pressure_form.html'
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('emr:arterial_pressure_list')
+
+
+

@@ -29,11 +29,11 @@ class Medication(models.Model):
 
 class ArterialPressure(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    arterial_pressure = models.IntegerField()
+    arterial_pressure = models.CharField(max_length=100)
     arterial_pressure_date = models.DateTimeField()
-    heart_rate = models.IntegerField()
-    saturation = models.IntegerField()
-    temperature = models.IntegerField()
+    heart_rate = models.CharField(max_length=100)
+    saturation = models.CharField(max_length=100)
+    temperature = models.CharField(max_length=100)
     observation = models.TextField()
 
 class MedicationControl(models.Model):

@@ -11,4 +11,8 @@ urlpatterns = [
     path('medication_control_form/', views.MedControlFormView.as_view(), name='medication_control_form'),
     path('medication_control_details/<int:record_id>/', views.MedControlDetailsView.as_view(), name='medication_control_details'),
     path('medication_control_list/', views.MedControlView.as_view(), name='medication_control_list'),
+
+    
+    path('arterial_pressure_form/', views.ArterialPressureFormView.as_view(), name='arterial_pressure_form'),
+    path('arterial_pressure_list/', views.ArterialPressureView.as_view(), name='arterial_pressure_list'),
 ]
