@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure
+from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy
 from datetime import datetime
 class MedicationForm(forms.ModelForm):
     class Meta:
@@ -99,3 +99,41 @@ class ArterialPressureForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['arterial_pressure_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+
+
+class MedicalRecordForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ['diagnosis', 'therapy', 'record_date', 'record_analysis', 'record_therapy', 'record_recommendation', 'record_observation']
+        labels = {
+            'diagnosis': 'Diagnóstico',
+            'therapy': 'Terapia',
+            'record_date': 'Fecha de Registro',
+            'record_analysis': 'Análisis',
+            'record_therapy': 'Tratamiento',
+            'record_recommendation': 'Recomendación',
+            'record_observation': 'Observación',
+
+        }
+        placeholders = {
+            'record_recommendation': 'Recomendación',
+            'record_observation': 'Agregue observaciones adicionales o escriba su nombre(firma)',
+        }
+        widgets = {
+            'diagnosis': forms.Select(attrs={'class': 'form-control'}),
+            'therapy': forms.Select(attrs={'class': 'form-control'}),
+            'record_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'record_analysis': forms.Textarea(attrs={'class': 'form-control'}),
+            'record_therapy': forms.Textarea(attrs={'class': 'form-control'}),
+            'record_recommendation': forms.Textarea(attrs={'class': 'form-control'}),
+            'record_observation': forms.Textarea(attrs={'class': 'form-control', 'placeholder': placeholders['record_observation']}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['diagnosis'].queryset = Diagnosis.objects.all().order_by('diagnosis_name')
+            self.fields['therapy'].queryset = Therapy.objects.all().order_by('therapy_name')
+            self.fields['record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+

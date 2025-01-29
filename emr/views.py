@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, View
-from .models import Medication, Patient, MedicationControl, ArterialPressure
-from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm
+from django.views.generic import ListView, CreateView, View, UpdateView 
+from django.urls import reverse_lazy
+from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, MedicalRecord
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, MedicalRecordForm
 from datetime import date, timedelta
 
 # Create your views here.
@@ -9,8 +10,42 @@ from datetime import date, timedelta
 def index(request):
     return render(request, 'emr/index.html')
 
-def medical_record(request):
-    return render(request, 'emr/medical_record.html')
+'''
+
+TO Medical Record
+
+'''
+
+
+class MedicalRecordView(ListView):
+    model = MedicalRecord
+    template_name = 'emr/to_medical_form_list.html'
+    context_object_name = 'medical_records'
+
+class MedicalRecordFormView(View):
+    form_class = MedicalRecordForm
+    template_name = 'emr/to_medical_record_form.html'
+    def get(self, request):
+        form = self.form_class()
+        patient = Patient.objects.get(id=1)
+        return render(request, self.template_name, {'form': form, 'patient': patient})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.instance.patient = Patient.objects.get(id=1)
+            form.save()
+            return redirect('emr:medical_record_list')
+
+
+
+class MedicalRecordUpdateFormView(UpdateView):
+
+    model = MedicalRecord
+    form_class = MedicalRecordForm
+    template_name = 'emr/to_medical_record_form.html'
+    success_url = reverse_lazy('emr:medical_record_list')
+
 
 '''
 
@@ -133,4 +168,42 @@ class ArterialPressureFormView(View):
             return redirect('emr:arterial_pressure_list')
 
 
+'''
 
+Food Ingestion
+'''
+
+class FoodIngestionView(View):
+    template_name = 'emr/food_ingestion_list.html'
+    def get(self, request):
+        
+        today = date.today()
+        print(today)
+        day_offset = int(request.GET.get('day', 0))
+        print(day_offset)
+        base_monday = today - timedelta(days=today.weekday()) 
+        print(base_monday)
+        start_of_day = base_monday + timedelta(days=day_offset)
+        print(start_of_day)
+        end_of_day = start_of_day + timedelta(days=1)
+        print(end_of_day)
+        
+
+        day_display = {
+            'start': start_of_day.strftime('%d/%m/%Y'),
+            'end': end_of_day.strftime('%d/%m/%Y'),
+            'offset': day_offset
+        }
+
+
+        records = FoodIngestion.objects.filter(
+            food_date__range=(start_of_day, end_of_day)
+        )
+        print(records)
+        context = {
+            'records': records,
+            'day_display': day_display
+        }
+
+        return render(request, self.template_name, context)
+    

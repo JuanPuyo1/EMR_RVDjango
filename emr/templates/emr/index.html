@@ -25,7 +25,7 @@
         <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
         <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
         <li><a href="{% url 'emr:arterial_pressure_list' %}">Registro de Presion Arterial</a></li>
-        <li><a href="">Ingeridos/Eliminados</a></li>
+        <li><a href="{% url 'emr:food_ingestion_list' %}">Ingeridos/Eliminados</a></li>
         <li><a href="">Registro de Comidas</a></li>
     </ul>
 </details>
@@ -33,13 +33,14 @@
 
 <article>
 <details>
-    <summary>TERAPIA OCCUPACIONAL</summary>
+    <summary>TERAPIAS</summary>
     <ul>
         <li><a href="">Registrar Valoración</a></li>
-        <li><a href="">Registrar Terapia</a></li>
+        <li><a href="{% url 'emr:medical_record_list' %}">Registrar Terapia</a></li>
     </ul>
 </details>
 </article>
+
 
 <article>
 <details>

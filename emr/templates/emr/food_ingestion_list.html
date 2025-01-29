@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}
+<h1>Ingestión de Alimentos</h1>
+{% endblock title %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:food_ingestion_list' %}">Ingestión de Alimentos</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end">
+<button class="secondary" onclick="window.location.href=''">Agregar Registro</button>
+</div>
+
+
+<span id="currentWeekDisplay" class="mx-3">
+    Dia {{ day_display.start }}
+</span>
+<div role="group">
+   
+       
+            <button id="prevWeek" class="btn btn-primary">&lt; Dia Anterior</button>
+            
+            <button id="nextWeek" class="btn btn-primary">Siguiente Dia &gt;</button>
+       
+    </div>
+    
+    <div class="overflow-auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Ingeridos</th>
+                    <th>Eliminados</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.food_date }}</td>
+                    <td>{{ record.food_ingestion }}</td>
+                    <td>{{ record.food_eliminated }}</td>
+                    <td>{{ record.food_observation }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentOffset = {{ day_display.offset }};
+        
+        document.getElementById('prevWeek').addEventListener('click', function() {
+            window.location.href = `?day=${currentOffset - 1}`;
+        });
+        
+        document.getElementById('nextWeek').addEventListener('click', function() {
+            window.location.href = `?day=${currentOffset + 1}`;
+        });
+    });
+</script>
+{% endblock extra_scripts %}
