@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord
+from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord
 from datetime import datetime
 
 
@@ -104,9 +104,9 @@ class ArterialPressureForm(forms.ModelForm):
 
 
 
-class MedicalRecordForm(forms.ModelForm):
+class TherapyMedicalRecordForm(forms.ModelForm):
     class Meta:
-        model = MedicalRecord
+        model = TherapyMedicalRecord
         fields = ['diagnosis', 'therapy', 'record_date', 'record_analysis', 'record_therapy', 'record_recommendation', 'record_observation']
         labels = {
             'diagnosis': 'Diagnóstico',

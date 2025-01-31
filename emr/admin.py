@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Patient, MedicalRecord, Diagnosis, Therapy, Medication, ArterialPressure, MedicationControl, FoodControl, WeightControl, FoodIngestion, FoodDaily, FoodDailyType
+from .models import Patient, TherapyMedicalRecord, Diagnosis, Therapy, Medication, ArterialPressure, MedicationControl, FoodControl, WeightControl, FoodIngestion, FoodDaily, FoodDailyType
 
 admin.site.register(Patient)
-admin.site.register(MedicalRecord)
+admin.site.register(TherapyMedicalRecord)
 admin.site.register(Diagnosis)
 admin.site.register(Therapy)
 admin.site.register(Medication)

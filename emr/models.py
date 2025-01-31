@@ -27,7 +27,7 @@ class Therapy(models.Model):
     def __str__(self):
         return self.therapy_name
 
-class MedicalRecord(models.Model):
+class TherapyMedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     record_date = models.DateTimeField()
     diagnosis = models.ForeignKey(Diagnosis, on_delete=models.DO_NOTHING, null=True, blank=True)

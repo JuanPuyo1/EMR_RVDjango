@@ -8,7 +8,7 @@
 <nav aria-label="breadcrumb">
     <ul>
       <li><a href="{% url 'emr:index' %}">Inicio</a></li>
-      <li><a href="{% url 'emr:medical_record_list' %}">Formulario de Registro Médico</a></li>
+      <li><a href="{% url 'emr:therapy_medical_record_list' %}">Formulario de Registro Terapéutico</a></li>
     </ul>
   </nav>
 {% endblock breadcrumb %}
@@ -16,7 +16,7 @@
 {% block content %}
     <h1>Registro de Terapias para {{ patient.name }}</h1>
     <div class="d-flex justify-content-end">
-        <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:medical_record_form' %}'">Agregar Registro</button>
+        <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:therapy_medical_record_form' %}'">Agregar Registro</button>
     </div>
     <div class="overflow-auto"> 
     <table class="table">
@@ -35,7 +35,7 @@
                     <td>{{ medical_record.diagnosis.diagnosis_name }}</td>
                     <td>{{ medical_record.therapy.therapy_name }}</td>
                     <td>
-                        <a href="{% url 'emr:medical_record_form_update' medical_record.id %}" class="btn btn-warning">Editar</a>
+                        <a href="{% url 'emr:therapy_medical_record_form_update' medical_record.id %}" class="btn btn-warning">Editar</a>
                     </td>
                 </tr>
             {% endfor %}
