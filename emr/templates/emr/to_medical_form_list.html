@@ -14,7 +14,7 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-    <h1>Registro de Terapias</h1>
+    <h1>Registro de Terapias para {{ patient.name }}</h1>
     <div class="d-flex justify-content-end">
         <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:medical_record_form' %}'">Agregar Registro</button>
     </div>

@@ -22,4 +22,7 @@ urlpatterns = [
 
 
     path('food_ingestion_list/', views.FoodIngestionView.as_view(), name='food_ingestion_list'),
-]
+
+    path('food_daily_list/', views.FoodDailyView.as_view(), name='food_daily_list'),
+    path('food_daily_form/', views.FoodDailyFormView.as_view(), name='food_daily_form'),
+    ]

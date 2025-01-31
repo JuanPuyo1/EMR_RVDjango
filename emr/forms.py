@@ -1,6 +1,8 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy
+from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy, FoodDaily, FoodDailyType, Patient
 from datetime import datetime
+
+
 class MedicationForm(forms.ModelForm):
     class Meta:
         model = Medication
@@ -78,7 +80,7 @@ class ArterialPressureForm(forms.ModelForm):
             'observation': 'Observación',
         }
         placeholders = {
-            'arterial_pressure': 'Presión Arterial',
+            'arterial_pressure': 'Ejemplo: 180/74mm/HG',
             'arterial_pressure_date': 'Fecha y Hora de Medición',
             'heart_rate': 'Frecuencia Cardiaca',
             'saturation': 'Saturación de Oxígeno',
@@ -87,7 +89,7 @@ class ArterialPressureForm(forms.ModelForm):
         }
 
         widgets = {
-            'arterial_pressure': forms.TextInput(attrs={'class': 'form-control'}),
+            'arterial_pressure': forms.TextInput(attrs={'class': 'form-control', 'placeholder': placeholders['arterial_pressure']}),
             'arterial_pressure_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
                 format="%Y-%m-%dT%H:%M",),
             'heart_rate': forms.TextInput(attrs={'class': 'form-control', 'placeholder': placeholders['heart_rate']}),
@@ -137,3 +139,27 @@ class MedicalRecordForm(forms.ModelForm):
             self.fields['therapy'].queryset = Therapy.objects.all().order_by('therapy_name')
             self.fields['record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
+
+class FoodDailyForm(forms.ModelForm):
+    class Meta:
+        model = FoodDaily
+        fields = ['food_daily_type', 'food_daily_date', 'food_daily_food', 'food_daily_observation']
+
+        labels = {
+            'food_daily_type': 'Tipo de Comida',
+            'food_daily_date': 'Fecha de Comida',
+            'food_daily_food': 'Comida',
+            'food_daily_observation': 'Observación',
+        }
+
+        widgets = {
+            'food_daily_type': forms.Select(attrs={'class': 'form-control'}),
+            'food_daily_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'food_daily_food': forms.Textarea(attrs={'class': 'form-control'}),
+            'food_daily_observation': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['food_daily_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")

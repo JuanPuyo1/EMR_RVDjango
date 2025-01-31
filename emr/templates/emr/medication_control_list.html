@@ -18,6 +18,9 @@
 
 {% block content %}
 
+<h1>Control de Medicamentos para {{ patient.name }}</h1>
+
+
 <div class="d-flex justify-content-end">
 <button class="secondary" onclick="window.location.href='{% url 'emr:medication_control_form' %}'">Agregar Registro</button>
 </div>

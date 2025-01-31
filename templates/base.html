@@ -34,9 +34,9 @@
     <header class="container">
         <nav>
             <ul>
-              <li><strong>Sistema de Gestión</strong></li>
+              <li><strong>SISTEMA DE GESTIÓN</strong></li>
             </ul>
-            <ul>
+            <ul dir="rtl">
               <li>
                 <details class="dropdown">
                   <summary>Enfermería</summary>
@@ -51,7 +51,7 @@
               </li>
               <li>
                 <details class="dropdown">
-                  <summary>TO</summary>
+                  <summary>Terapias</summary>
                   <ul dir="rtl">
                   <li><a href="#" class="secondary">Historia Clínica</a></li>
                   <li><a href="#" class="secondary">Registro Valoración</a></li>
@@ -67,24 +67,21 @@
                   </ul>
                 </details>
               </li>
-              <li>
-                <details class="dropdown">
-                  <summary>
-                    Account
-                  </summary>
-                  <ul dir="rtl">
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Security</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
-                  </ul>
-                </details>
-              </li>
             </ul>
           </nav>
     </header>
     {% endif %}
     <main class="container">
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+          {% endfor %}
+      </div>
+        {% endif %}
+        
         {% block breadcrumb %}
         {% endblock breadcrumb %}
         {% block content %}

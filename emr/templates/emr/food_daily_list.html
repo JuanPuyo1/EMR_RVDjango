@@ -1,27 +1,24 @@
 {% extends "base.html" %}
+
 {% block title %}
-<h1>Ingestión de Alimentos</h1>
+    Lista de Alimentos
 {% endblock title %}
 
-{% block extra_css %}
-
-{% endblock extra_css %}
-
 {% block breadcrumb %}
+    
 <nav aria-label="breadcrumb">
     <ul>
       <li><a href="{% url 'emr:index' %}">Inicio</a></li>
-      <li><a href="{% url 'emr:food_ingestion_list' %}">Ingestión de Alimentos</a></li>
+      <li><a href="{% url 'emr:food_daily_list' %}">Registro diario de alimentos</a></li>
     </ul>
   </nav>
 {% endblock breadcrumb %}
 
 {% block content %}
+  <h1>Registro diario de alimentos para {{ patient.name }}</h1>
 
-<h1>Ingestión de Alimentos para {{ patient.name }}</h1>
-
-<div class="container">
-<button class="secondary" onclick="window.location.href=''">Agregar Registro</button>
+  <div class="container">
+  <button class="secondary" onclick="window.location.href='{% url 'emr:food_daily_form' %}'">Agregar Registro</button>
 </div>
 
 
@@ -36,33 +33,30 @@
             <button id="nextWeek" class="btn btn-primary">Siguiente Dia &gt;</button>
        
     </div>
-    
 
-    
 
-    <div class="overflow-auto">
-        <table>
-            <thead>
-                <tr>
-                    <th>Fecha y Hora</th>
-                    <th>Ingeridos</th>
-                    <th>Eliminados</th>
-                    <th>Observación</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for record in records %}
-                <tr>
-                    <td>{{ record.food_date }}</td>
-                    <td>{{ record.food_ingestion }}</td>
-                    <td>{{ record.food_eliminated }}</td>
-                    <td>{{ record.food_observation }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        </div>
-
+  <div class="overflow-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th>Alimentos</th>
+          <th>Observaciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for food_daily in records %}
+          <tr>
+            <td>{{ food_daily.food_daily_type.food_daily_type_name }}</td>
+            <td>{{ food_daily.food_daily_date }}</td>
+            <td style="white-space: pre-wrap;">{{ food_daily.food_daily_food }}</td>
+            <td>{{ food_daily.food_daily_observation }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {% endblock content %}
 

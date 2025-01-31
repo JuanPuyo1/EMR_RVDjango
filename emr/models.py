@@ -85,6 +85,23 @@ class FoodControl(models.Model):
     food_control_location = models.CharField(max_length=100)
     food_control_observation = models.TextField()
 
+
+class FoodDailyType(models.Model):
+    food_daily_type_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.food_daily_type_name
+
+class FoodDaily(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+    food_daily_date = models.DateTimeField()
+    food_daily_type = models.ForeignKey(FoodDailyType, on_delete=models.DO_NOTHING)
+    food_daily_food = models.TextField()
+    food_daily_observation = models.TextField()
+
+    def __str__(self):
+        return self.food_daily_type.food_daily_type_name + " " + self.food_daily_date.strftime('%d/%m/%Y')
+
 class WeightControl(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
     weight = models.IntegerField()

@@ -16,6 +16,10 @@
 
 {% block content %}
 <h1>Agregar Medición de Presión Arterial</h1>
+
+<label for="patient-name">Paciente:</label>
+<input type="text" value="{{ patient.name }}" readonly>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

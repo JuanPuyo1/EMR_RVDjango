@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Agregar Comida
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:food_daily_list' %}">Registro diario de alimentos</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Agregar Comida</li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <h1>Agregar Comida</h1>
+
+  <label for="patient-select">Paciente:</label>
+  <input type="text" value="{{ patient.name }}" readonly>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+{% endblock content %}

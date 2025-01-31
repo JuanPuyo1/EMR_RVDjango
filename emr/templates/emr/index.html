@@ -8,35 +8,47 @@
 
 
 {% block custom_css %}
-<style>
-    #enfermeria {
-        font-weight: bold;
-    }
-</style>
+
 {% endblock custom_css %}
 
 {% block content %}
 
+<h1>MENU PRINCIPAL</h1>
+
+<h4>Por favor, seleccione un paciente</h4>
+
+<form id="patient-form" method="POST">
+    {% csrf_token %}
+    <select name="patient_id" id="patient-select" onchange="this.form.submit()">
+        <option value="">Seleccionar paciente</option>
+        {% for patient in patients %}
+            <option value="{{ patient.id }}" {% if patient.id|stringformat:"s" == current_patient_id|stringformat:"s" %}selected{% endif %}>
+                {{ patient.name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
 
 <article>
 <details>
-    <summary id="enfermeria">ENFERMERÍA</summary>
+    <summary>ENFERMERÍA</summary>
     <ul>
         <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
         <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
-        <li><a href="{% url 'emr:arterial_pressure_list' %}">Registro de Presion Arterial</a></li>
+        <li><a href="{% url 'emr:arterial_pressure_list' %}">Registro de Signos Vitales</a></li>
         <li><a href="{% url 'emr:food_ingestion_list' %}">Ingeridos/Eliminados</a></li>
-        <li><a href="">Registro de Comidas</a></li>
+        <li><a href="{% url 'emr:food_daily_list' %}">Registro diario de Alimentos</a></li>
+
     </ul>
 </details>
 </article>
-
 <article>
 <details>
     <summary>TERAPIAS</summary>
     <ul>
+        <li><a href="{% url 'emr:medical_record_list' %}">Registrar Evolución</a></li>
         <li><a href="">Registrar Valoración</a></li>
-        <li><a href="{% url 'emr:medical_record_list' %}">Registrar Terapia</a></li>
     </ul>
 </details>
 </article>
@@ -47,8 +59,31 @@
     <summary>MEDICINA GENERAL</summary>
     <ul>
         <li><a href="">Registro de Historia Clínica</a></li>
-        <li><a href="">Registro de Exámenes</a></li>
     </ul>
 </details>
 </article>
+
+<article>
+<details>
+    <summary>CUENTA</summary>
+    <ul>
+        <li><a href="">Detalles de su cuenta</a></li>
+        <li><a href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
+    </ul>
+</details>
+</article>
+
 {% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const patientSelect = document.getElementById('patient-select');
+        const currentPatientId = '{{ current_patient_id }}';
+        
+        if (currentPatientId) {
+            patientSelect.value = currentPatientId;
+        }
+    });
+    </script>
+{% endblock extra_scripts %}
