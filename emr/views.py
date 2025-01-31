@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View, UpdateView 
 from django.urls import reverse_lazy
-from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord
-from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm
+from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -350,4 +350,49 @@ class NurseCarerRecordFormView(PatientRequiredMixin, View):
     def get(self, request):
         form = self.form_class()
         return render(request, self.template_name, {'form': form, 'patient': self.patient})
+
+'''
+
+Medical Record
+
+'''
+
+class MedicalRecordView(PatientRequiredMixin, View):
+    template_name = 'emr/medical_record_list.html'
+    context_object_name = 'medical_records'
+    def get(self, request):
+        medical_records = MedicalRecord.objects.filter(patient=self.patient).order_by('-medical_record_date')
+        context = {
+            'medical_records': medical_records,
+            'patient': self.patient
+        }
+        return render(request, self.template_name, context)
+
+
+class MedicalRecordDetailView(PatientRequiredMixin, View):
+    template_name = 'emr/medical_record_detail.html'
+    def get(self, request, medical_record_id):
+        medical_record = MedicalRecord.objects.get(id=medical_record_id)
+        return render(request, self.template_name, {'medical_record': medical_record})
+
+class MedicalRecordUpdateView(PatientRequiredMixin, UpdateView):
+    model = MedicalRecord
+    form_class = MedicalRecordForm
+    template_name = 'emr/medical_record_form.html'
+    success_url = reverse_lazy('emr:medical_record_list')
+
+class MedicalRecordFormView(PatientRequiredMixin, View):
+    form_class = MedicalRecordForm
+    template_name = 'emr/medical_record_form.html'
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid(): 
+            form.instance.patient = self.patient
+            form.save()
+            return redirect('emr:medical_record_list')
+
 

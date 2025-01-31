@@ -113,3 +113,11 @@ class NurseCarerRecord(models.Model):
     nurse_carer_record_date = models.DateTimeField()
     nurse_carer_record_observation = models.TextField()
 
+class MedicalRecord(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+    medical_record_date = models.DateTimeField()
+    medical_record_reason = models.CharField(max_length=100)
+    medical_record_actual_state = models.TextField()
+    medical_record_analysis = models.TextField()
+    medical_record_recommendation_plan = models.TextField()
+    medical_record_vital_signs = models.TextField()

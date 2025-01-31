@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord
+from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord, MedicalRecord
 from datetime import datetime
 
 
@@ -185,4 +185,37 @@ class NurseCarerRecordForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['nurse_carer_record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+
+
+class MedicalRecordForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ['medical_record_date', 'medical_record_reason', 'medical_record_actual_state', 'medical_record_analysis', 'medical_record_recommendation_plan', 'medical_record_vital_signs']
+
+        labels = {
+            'medical_record_date': 'Fecha de Registro',
+            'medical_record_reason': 'Motivo de la Consulta',
+            'medical_record_actual_state': 'Estado Actual',
+            'medical_record_analysis': 'Análisis',
+            'medical_record_recommendation_plan': 'Plan de Recomendación',
+            'medical_record_vital_signs': 'Signos Vitales',
+        }
+        placeholders = {
+            'medical_record_vital_signs': 'Peso, Talla, Frecuencia Cardiaca, Frecuencia Respiratoria, Temperatura, Saturación de Oxígeno, Presión Arterial',
+        }
+
+        widgets = {
+            'medical_record_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'medical_record_reason': forms.TextInput(attrs={'class': 'form-control'}),
+            'medical_record_actual_state': forms.Textarea(attrs={'class': 'form-control'}),
+            'medical_record_analysis': forms.Textarea(attrs={'class': 'form-control'}),
+            'medical_record_recommendation_plan': forms.Textarea(attrs={'class': 'form-control'}),
+            'medical_record_vital_signs': forms.Textarea(attrs={'class': 'form-control', 'placeholder': placeholders['medical_record_vital_signs']}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['medical_record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
