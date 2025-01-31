@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View, UpdateView 
 from django.urls import reverse_lazy
-from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, MedicalRecord, FoodDaily
-from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, MedicalRecordForm, FoodDailyForm
+from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, MedicalRecord, FoodDaily, NurseCarerRecord
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, MedicalRecordForm, FoodDailyForm, NurseCarerRecordForm
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -306,4 +306,48 @@ class FoodDailyFormView(View):
             form.save()
             return redirect('emr:food_daily_list')
 
+
+'''
+
+Nurse Carer Record
+
+'''
+
+class NurseCarerRecordView(PatientRequiredMixin, View):
+    template_name = 'emr/nurse_carer_record_list.html'
+    def get(self, request):
+        patient_id = request.session.get('current_patient_id')
+        patient = Patient.objects.get(id=patient_id)
+
+        today = date.today()
+        day_offset = int(request.GET.get('day', 0))
+        base_monday = today - timedelta(days=today.weekday()) 
+        start_of_day = base_monday + timedelta(days=day_offset)
+        end_of_day = start_of_day + timedelta(days=1)
+            
+
+        day_display = {
+            'start': start_of_day.strftime('%d/%m/%Y'),
+            'end': end_of_day.strftime('%d/%m/%Y'),
+            'offset': day_offset
+        }
+        records = NurseCarerRecord.objects.filter(
+            patient_id=patient_id,
+            nurse_carer_record_date__range=(start_of_day, end_of_day)
+        )
+        context = {
+            'records': records,
+            'day_display': day_display,
+            'patient': patient
+        }
+        return render(request, self.template_name, context)
+    
+
+    
+class NurseCarerRecordFormView(PatientRequiredMixin, View):
+    form_class = NurseCarerRecordForm
+    template_name = 'emr/nurse_carer_record_form.html'
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
 

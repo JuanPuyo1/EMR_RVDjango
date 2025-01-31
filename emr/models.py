@@ -108,3 +108,8 @@ class WeightControl(models.Model):
     weight_date = models.DateTimeField()
     weight_observation = models.TextField()
 
+class NurseCarerRecord(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+    nurse_carer_record_date = models.DateTimeField()
+    nurse_carer_record_observation = models.TextField()
+

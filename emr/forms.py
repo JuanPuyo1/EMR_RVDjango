@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy, FoodDaily, FoodDailyType, Patient
+from .models import Medication, MedicationControl, ArterialPressure, MedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord
 from datetime import datetime
 
 
@@ -163,3 +163,26 @@ class FoodDailyForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['food_daily_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+
+
+class NurseCarerRecordForm(forms.ModelForm):
+    class Meta:
+        model = NurseCarerRecord
+        fields = ['nurse_carer_record_date', 'nurse_carer_record_observation']
+
+        labels = {
+            'nurse_carer_record_date': 'Fecha de Registro',
+            'nurse_carer_record_observation': 'Observación',
+        }
+
+        widgets = {
+            'nurse_carer_record_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'nurse_carer_record_observation': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['nurse_carer_record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
