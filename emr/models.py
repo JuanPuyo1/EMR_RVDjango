@@ -108,13 +108,25 @@ class WeightControl(models.Model):
     weight_date = models.DateTimeField()
     weight_observation = models.TextField()
 
+
+
 class NurseCarerRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+    nurse_carer_record_type = models.CharField(max_length=30, null=True, blank=True, choices=[
+        ('Registro de enfermería', 'Registro de enfermería'),
+        ('Registro de cuidador', 'Registro de cuidador'),
+    ])
+
     nurse_carer_record_date = models.DateTimeField()
     nurse_carer_record_observation = models.TextField()
 
+    def __str__(self):
+        return self.nurse_carer_record_type + " " + self.nurse_carer_record_date.strftime('%d/%m/%Y')
+
+
 class MedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+
     medical_record_date = models.DateTimeField()
     medical_record_reason = models.CharField(max_length=100)
     medical_record_actual_state = models.TextField()

@@ -36,6 +36,7 @@ Notas de Enfermería para {{ patient.name }}
     <thead>
         <tr>
             <th>Fecha</th>
+            <th>Tipo</th>
             <th>Observación</th>
         </tr>
     </thead>
@@ -43,6 +44,7 @@ Notas de Enfermería para {{ patient.name }}
         {% for record in records %}
         <tr>
             <td>{{ record.nurse_carer_record_date }}</td>
+            <td>{{ record.nurse_carer_record_type }}</td>
             <td>{{ record.nurse_carer_record_observation }}</td>
         </tr>
         {% endfor %}

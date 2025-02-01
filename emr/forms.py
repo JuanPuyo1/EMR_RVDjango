@@ -169,18 +169,24 @@ class FoodDailyForm(forms.ModelForm):
 class NurseCarerRecordForm(forms.ModelForm):
     class Meta:
         model = NurseCarerRecord
-        fields = ['nurse_carer_record_date', 'nurse_carer_record_observation']
+        fields = ['nurse_carer_record_type', 
+                  'nurse_carer_record_date', 'nurse_carer_record_observation']
+
 
         labels = {
+           'nurse_carer_record_type': 'Tipo de Registro',
             'nurse_carer_record_date': 'Fecha de Registro',
             'nurse_carer_record_observation': 'Observación',
         }
 
+
         widgets = {
+            'nurse_carer_record_type': forms.Select(attrs={'class': 'form-control'}),
             'nurse_carer_record_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
                 format="%Y-%m-%dT%H:%M",),
             'nurse_carer_record_observation': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)

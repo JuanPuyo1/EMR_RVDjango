@@ -351,11 +351,19 @@ class NurseCarerRecordFormView(PatientRequiredMixin, View):
         form = self.form_class()
         return render(request, self.template_name, {'form': form, 'patient': self.patient})
 
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.instance.patient = self.patient
+            form.save()
+            return redirect('emr:nurse_carer_record_list')
+
 '''
 
 Medical Record
 
 '''
+
 
 class MedicalRecordView(PatientRequiredMixin, View):
     template_name = 'emr/medical_record_list.html'
