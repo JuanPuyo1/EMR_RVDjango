@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from .forms import LoginForm
+from django.contrib.auth.models import User
 
 class LoginView(View):
 
@@ -33,3 +34,15 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('accounts:login')
+    
+
+class AccountDetailView(View):
+    model = User
+    template_name = 'accounts/account_detail.html'
+    context_object_name = 'user'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+    
+    
+
