@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View, UpdateView 
 from django.urls import reverse_lazy
-from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord
-from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm
+from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm, TherapyMedicalValorationForm
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 
 # Create your views here.
 
@@ -93,27 +94,54 @@ class TherapyMedicalRecordUpdateFormView(PatientRequiredMixin, UpdateView):
         return context
 
 
+class TherapyMedicalValorationView(PatientRequiredMixin, View):
+    template_name = 'emr/therapy_valoration_list.html'
+    context_object_name = 'therapy_medical_valoration'
+
+    def get(self, request):
+        print(self.patient)
+        therapy_medical_valoration = TherapyMedicalValoration.objects.filter(patient=self.patient).order_by('-therapy_medical_valoration_date')
+        return render(request, self.template_name, {'therapy_medical_valoration': therapy_medical_valoration, 'patient': self.patient})
+
+
+class TherapyMedicalValorationFormView(PatientRequiredMixin, View):
+    form_class = TherapyMedicalValorationForm
+    template_name = 'emr/therapy_valoration_form.html'
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
+
 '''
 
 Medication Inventory
 
 '''
 
-class MedCreateView(CreateView):
+
+
+class MedCreateView(PatientRequiredMixin, CreateView):
     template_name = 'emr/medication_inventory_form.html'
     form_class = MedicationForm
 
     def form_valid(self, form):
-        form.instance.patient = Patient.objects.get(id=1)
+        form.instance.patient = self.patient
         form.save()
         return redirect('emr:medication_inventory')
 
 
 
-class MedInventoryView(ListView):
-    model = Medication
+
+class MedInventoryView(PatientRequiredMixin, View):
     template_name = 'emr/medication_inventory.html'
-    context_object_name = 'medications'
+    def get(self, request):
+        medications = Medication.objects.filter(patient=self.patient)
+        context = {
+            'medications': medications,
+            'patient': self.patient
+        }
+        return render(request, self.template_name, context)
+
+
 
 
 '''
@@ -170,16 +198,17 @@ class MedControlDetailsView(View):
         record = MedicationControl.objects.get(id=record_id)
         return render(request, self.template_name, {'record': record})
 
-class MedControlFormView(View):
+class MedControlFormView(PatientRequiredMixin, View):
     form_class = MedicationControlForm
     template_name = 'emr/medication_control_form.html'
     def get(self, request):      
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
     
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            form.instance.patient = self.patient
             form.save()
             return redirect('emr:medication_control_list')
         
@@ -261,11 +290,10 @@ Food Daily
 
 '''
 
-class FoodDailyView(View):
+class FoodDailyView(PatientRequiredMixin, View):
     template_name = 'emr/food_daily_list.html'
     def get(self, request):
-        patient_id = request.session.get('current_patient_id')
-        patient = Patient.objects.get(id=patient_id)
+
 
         today = date.today()
         day_offset = int(request.GET.get('day', 0))
@@ -280,29 +308,29 @@ class FoodDailyView(View):
             'offset': day_offset
         }
         records = FoodDaily.objects.filter(
-            patient_id=patient_id,
+            patient=self.patient,
             food_daily_date__range=(start_of_day, end_of_day)
         )
+
         context = {
             'records': records,
             'day_display': day_display,
-            'patient': patient
+            'patient': self.patient
         }
         return render(request, self.template_name, context)
     
 
-class FoodDailyFormView(View):
+class FoodDailyFormView(PatientRequiredMixin, View):
     form_class = FoodDailyForm
     template_name = 'emr/food_daily_form.html'
     def get(self, request):
-        patient = Patient.objects.get(id=request.session.get('current_patient_id'))
-        print(patient)
         form = self.form_class()
-        return render(request, self.template_name, {'form': form, 'patient': patient})
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
     
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            form.instance.patient = self.patient
             form.save()
             return redirect('emr:food_daily_list')
 

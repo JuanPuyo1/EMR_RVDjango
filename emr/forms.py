@@ -1,5 +1,5 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord, MedicalRecord
+from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
 from datetime import datetime
 
 
@@ -140,8 +140,42 @@ class TherapyMedicalRecordForm(forms.ModelForm):
             self.fields['record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
 
+class TherapyMedicalValorationForm(forms.ModelForm):
+    class Meta:
+        model = TherapyMedicalValoration
+        fields = ['therapy_medical_valoration_date', 'therapy_medical_valoration_reason', 'therapy_medical_valoration_diagnostic', 'therapy_medical_valoration_analysis', 'therapy_medical_valoration_treatment_plan', 'therapy_medical_valoration_observation']
+
+        labels = {
+            'therapy_medical_valoration_date': 'Fecha de Registro',
+            'therapy_medical_valoration_reason': 'Motivo de la Consulta',
+            'therapy_medical_valoration_diagnostic': 'Diagnóstico',
+            'therapy_medical_valoration_analysis': 'Análisis',
+            'therapy_medical_valoration_treatment_plan': 'Plan de Tratamiento',
+            'therapy_medical_valoration_observation': 'Observación',
+        }
+
+        placeholders = {
+            'therapy_medical_valoration_observation': 'Agregue observaciones adicionales',
+        }
+        widgets = {
+            'therapy_medical_valoration_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'therapy_medical_valoration_reason': forms.TextInput(attrs={'class': 'form-control'}),
+            'therapy_medical_valoration_diagnostic': forms.TextInput(attrs={'class': 'form-control'}),
+            'therapy_medical_valoration_analysis': forms.Textarea(attrs={'class': 'form-control'}),
+            'therapy_medical_valoration_treatment_plan': forms.Textarea(attrs={'class': 'form-control'}),
+            'therapy_medical_valoration_observation': forms.Textarea(attrs={'class': 'form-control', 'placeholder': placeholders['therapy_medical_valoration_observation']}),
+        }
+
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['therapy_medical_valoration_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+
 class FoodDailyForm(forms.ModelForm):
     class Meta:
+
         model = FoodDaily
         fields = ['food_daily_type', 'food_daily_date', 'food_daily_food', 'food_daily_observation']
 

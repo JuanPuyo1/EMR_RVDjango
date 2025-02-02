@@ -8,16 +8,19 @@ urlpatterns = [
     path('medical_record_list/', views.MedicalRecordView.as_view(), name='medical_record_list'),
     path('medical_record_form/', views.MedicalRecordFormView.as_view(), name='medical_record_form'),
     path('medical_record_detail/<int:medical_record_id>/', views.MedicalRecordDetailView.as_view(), name='medical_record_detail'),
-    #path('medical_record_form/<int:pk>/', views.MedicalRecordUpdateFormView.as_view(), name='medical_record_form_update'),
 
     path('therapy_medical_record_list/', views.TherapyMedicalRecordView.as_view(), name='therapy_medical_record_list'),
     path('therapy_medical_record_form/', views.TherapyMedicalRecordFormView.as_view(), name='therapy_medical_record_form'),
     path('therapy_medical_record_form/<int:pk>/', views.TherapyMedicalRecordUpdateFormView.as_view(), name='therapy_medical_record_form_update'),
 
+    path('therapy_valoration_list/', views.TherapyMedicalValorationView.as_view(), name='therapy_valoration_list'),
+    path('therapy_valoration_form/', views.TherapyMedicalValorationFormView.as_view(), name='therapy_valoration_form'),
+
 
     path('medication_form/', views.MedCreateView.as_view(), name='medication_form'),
     path('medication_inventory/', views.MedInventoryView.as_view(), name='medication_inventory'),
     path('medication_control_form/', views.MedControlFormView.as_view(), name='medication_control_form'),
+
     path('medication_control_details/<int:record_id>/', views.MedControlDetailsView.as_view(), name='medication_control_details'),
     path('medication_control_list/', views.MedControlView.as_view(), name='medication_control_list'),
 

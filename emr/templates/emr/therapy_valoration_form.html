@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Registro de Valoración de Terapia
+{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:therapy_valoration_list' %}">Lista de Valoración de Terapia</a></li>
+      <li><a href="{% url 'emr:therapy_valoration_form' %}"> Registro de Valoración de Terapia </a></li>
+    </ul>
+  </nav>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Formulario de Valoración de Terapia para {{ patient.name }}</h1>
+
+<label for="id_therapy_medical_valoration_date">Paciente:</label>
+<input type="text" id="id_patient" name="patient" value="{{ patient.name }}" readonly>
+
+
+<form method="post">
+
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+{% endblock %}

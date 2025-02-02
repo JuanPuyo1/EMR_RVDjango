@@ -14,11 +14,15 @@
 {% endblock breadcrumb %}
 
 {% block content %}
-<h1>Inventario de Medicamentos, Agregar Medicamento</h1>
+<h1>Inventario de Medicamentos, Agregar Medicamento para {{ patient.name }}</h1>
+
+<label for="patient_name">Paciente:</label>
+<input type="text" id="patient_name" value="{{ patient.name }}" readonly>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 {% endblock %}

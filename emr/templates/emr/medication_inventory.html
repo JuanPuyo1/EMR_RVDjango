@@ -21,9 +21,8 @@
 <button class="secondary" onclick="window.location.href='{% url 'emr:medication_form' %}'">Agregar Medicamento</button>
 </div>
 
-<h1>Inventario de Medicamentos</h1>
+<h1>Inventario de Medicamentos para {{ patient.name }}</h1>
 
-</button>
 <div class="overflow-auto">
 <table>
     <thead>

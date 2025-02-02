@@ -27,6 +27,19 @@ class Therapy(models.Model):
     def __str__(self):
         return self.therapy_name
 
+
+class TherapyMedicalValoration(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
+    therapy_medical_valoration_date = models.DateTimeField()
+    therapy_medical_valoration_reason = models.CharField(max_length=100)
+    therapy_medical_valoration_diagnostic = models.CharField(max_length=100)
+    therapy_medical_valoration_analysis = models.TextField()
+    therapy_medical_valoration_treatment_plan = models.TextField()
+    therapy_medical_valoration_observation = models.TextField()
+
+    def __str__(self):
+        return self.therapy_medical_valoration_date.strftime('%d/%m/%Y')
+
 class TherapyMedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     record_date = models.DateTimeField()
