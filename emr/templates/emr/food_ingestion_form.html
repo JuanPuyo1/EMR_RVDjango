@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Agregar Ingestión de Alimentos
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:food_ingestion_list' %}">Registro de Ingestión de Alimentos</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Agregar Ingestión de Alimentos</li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <h1>Agregar Ingestión de Alimentos para {{ patient.name }}</h1>
+
+  <label for="patient-select">Paciente:</label>
+  <input type="text" value="{{ patient.name }}" readonly>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+{% endblock content %}

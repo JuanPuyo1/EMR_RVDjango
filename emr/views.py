@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, View, UpdateView 
 from django.urls import reverse_lazy
 from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
-from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm, TherapyMedicalValorationForm
+from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm, TherapyMedicalValorationForm, FoodIngestionForm
 from datetime import date, timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -122,6 +122,11 @@ Medication Inventory
 class MedCreateView(PatientRequiredMixin, CreateView):
     template_name = 'emr/medication_inventory_form.html'
     form_class = MedicationForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['patient'] = self.patient
+        return context
 
     def form_valid(self, form):
         form.instance.patient = self.patient
@@ -284,6 +289,21 @@ class FoodIngestionView(PatientRequiredMixin, View):
 
         return render(request, self.template_name, context)
     
+
+class FoodIngestionFormView(PatientRequiredMixin, View):
+    form_class = FoodIngestionForm
+    template_name = 'emr/food_ingestion_form.html'
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'patient': self.patient})
+    
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.instance.patient = self.patient
+            form.save()
+            return redirect('emr:food_ingestion_list')
+
 '''
 
 Food Daily

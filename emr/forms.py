@@ -1,24 +1,30 @@
 from django import forms
-from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
+from .models import Medication, MedicationControl, ArterialPressure, TherapyMedicalRecord, Diagnosis, Therapy, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration, FoodIngestion
 from datetime import datetime
 
 
 class MedicationForm(forms.ModelForm):
     class Meta:
         model = Medication
-        fields = ['med_name', 'med_quantity', 'med_date', 'med_change', 'referer', 'med_observation']
+        fields = ['med_name', 'med_presentation', 'med_quantity', 'med_date', 'med_change', 'referer', 'med_observation']
 
         labels = {
             'med_name': 'Nombre del Medicamento',
+            'med_presentation': 'Presentación',
             'med_quantity': 'Cantidad Recibida',
             'med_date': 'Fecha de Entrega',
             'med_change': 'Cambio de Medicamento',
-            'referer': 'Medico que ordena el Cambio',
-            'med_observation': 'Obersavicion (Firma)',
+            'referer': 'Medico que ordena el Cambio (Seleccione un medico solo si se ordeno un cambio de medicamento)',
+            'med_observation': 'Observación (Firma)' ,
+        }
+        placeholders = {
+            'med_presentation': 'Ejemplo: tableta, cápsula, jarabe, etc.',
+            'med_quantity': 'Ejemplo: 100mg, 200ml, 1000mg, etc.',
         }
         widgets = {
             'med_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'med_quantity': forms.TextInput(attrs={'class': 'form-control'}),
+            'med_presentation': forms.TextInput(attrs={'class': 'form-control', 'placeholder': placeholders['med_presentation']}),
+            'med_quantity': forms.TextInput(attrs={'class': 'form-control', 'placeholder': placeholders['med_quantity']}),
             'med_date': forms.DateInput(
                 attrs={"type": "datetime-local", "class": "form-control"},
                 format="%Y-%m-%dT%H:%M",
@@ -31,6 +37,7 @@ class MedicationForm(forms.ModelForm):
         'referer': forms.Select(attrs={
             'class': 'form-control',
             'id': 'id_referer',
+            'hidden': True,
         }),
             'med_observation': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -38,7 +45,13 @@ class MedicationForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['med_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
-    
+
+        def clean_med_name(self):
+            med_name = self.cleaned_data.get('med_name')
+            if Medication.objects.filter(med_name=med_name).exists():
+                raise forms.ValidationError("El medicamento ya existe")
+            return med_name
+            
 
 class MedicationControlForm(forms.ModelForm):
     class Meta:
@@ -171,6 +184,31 @@ class TherapyMedicalValorationForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['therapy_medical_valoration_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
+
+class FoodIngestionForm(forms.ModelForm):
+    class Meta:
+        model = FoodIngestion
+        fields = ['food_date', 'food_ingestion', 'food_eliminated', 'food_observation']
+
+        
+        labels = {
+            'food_date': 'Fecha de Ingestión',
+            'food_ingestion': 'Ingestión',
+            'food_eliminated': 'Eliminado',
+            'food_observation': 'Observación',
+        }
+
+        widgets = {
+            'food_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
+                format="%Y-%m-%dT%H:%M",),
+            'food_ingestion': forms.Textarea(attrs={'class': 'form-control'}),
+            'food_eliminated': forms.Textarea(attrs={'class': 'form-control'}),
+            'food_observation': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['food_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
 
 
 class FoodDailyForm(forms.ModelForm):

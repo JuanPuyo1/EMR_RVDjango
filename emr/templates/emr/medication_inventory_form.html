@@ -23,13 +23,23 @@
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
 
-    
+  document.addEventListener('DOMContentLoaded', function() {
+    id_med_change = document.getElementById('id_med_change');
+    id_referer = document.getElementById('id_referer');
+    id_med_change.addEventListener('change', function() {
+      if (id_med_change.checked) {
+        id_referer.hidden = false;
+      } else {
+        id_referer.hidden = true;
+      }
+    }); 
+  });
 </script>
 {% endblock extra_scripts %}

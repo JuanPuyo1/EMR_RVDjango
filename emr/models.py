@@ -58,6 +58,7 @@ class TherapyMedicalRecord(models.Model):
 class Medication(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
     med_name = models.CharField(max_length=100)
+    med_presentation = models.CharField(max_length=100, null=True, blank=True)
     med_quantity = models.CharField(max_length=100)
     med_date = models.DateTimeField()
     med_change = models.BooleanField(default=False)

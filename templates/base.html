@@ -41,11 +41,12 @@
                 <details class="dropdown">
                   <summary>Enfermería</summary>
                   <ul dir="rtl">
-                  <li><a href="#" class="secondary">Inventario de Medicamentos</a></li>
-                  <li><a href="#" class="secondary">Control de Medicamentos</a></li>
-                  <li><a href="#" class="secondary">Registro de Presion Arterial</a></li>
-                  <li><a href="#" class="secondary">Registro de Comidas</a></li>
-                  <li><a href="#" class="secondary">Comidas</a></li>
+                    <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
+                    <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+                    <li><a href="{% url 'emr:arterial_pressure_list' %}">Registro de Signos Vitales</a></li>
+                    <li><a href="{% url 'emr:food_ingestion_list' %}">Ingeridos/Eliminados</a></li>
+                    <li><a href="{% url 'emr:food_daily_list' %}">Registro diario de Alimentos</a></li>
+                    <li><a href="{% url 'emr:nurse_carer_record_list' %}">Notas de Enfermería</a></li>
                   </ul>
               </details>
               </li>
@@ -53,8 +54,8 @@
                 <details class="dropdown">
                   <summary>Terapias</summary>
                   <ul dir="rtl">
-                  <li><a href="#" class="secondary">Historia Clínica</a></li>
-                  <li><a href="#" class="secondary">Registro Valoración</a></li>
+                    <li><a href="{% url 'emr:therapy_medical_record_list' %}">Registrar Evolución</a></li>
+                    <li><a href="{% url 'emr:therapy_valoration_list' %}">Registrar Valoración</a></li>
                 </ul>
               </details>
               </li>
@@ -62,8 +63,7 @@
                 <details class="dropdown">
                   <summary>MedGen</summary>
                   <ul dir="rtl">
-                    <li><a href="#" class="secondary">Historia Clínica</a></li>
-                    <li><a href="#" class="secondary">Registro Valoración</a></li>
+                    <li><a href="{% url 'emr:medical_record_list' %}">Registro de Historia Clínica</a></li>
                   </ul>
                 </details>
               </li>

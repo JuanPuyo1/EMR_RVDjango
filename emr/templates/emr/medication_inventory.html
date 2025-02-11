@@ -28,6 +28,7 @@
     <thead>
       <tr>
         <th scope="col">Nombre Medicamento</th>
+        <th scope="col">Presentación</th>
         <th scope="col">Cantidad Recibida</th>
         <th scope="col">Fecha de Entrega</th>
         <th scope="col">Cambio de Medicamento</th>
@@ -39,6 +40,7 @@
         {% for medication in medications %}
         <tr>
             <td>{{ medication.med_name }}</td>
+            <td>{{ medication.med_presentation }}</td>
             <td>{{ medication.med_quantity }}</td>
             <td>{{ medication.med_date }}</td>
             <td>{{ medication.med_change }}</td>
