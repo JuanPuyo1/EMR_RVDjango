@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+        <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+        <li><a href="{% url 'emr:medication_delete' medication.id %}">Eliminar Medicamento</a></li>
+    </ul>
+</nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h1>¿Está seguro de querer eliminar este medicamento?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'emr:medication_inventory' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+    console.log("Medication Inventory Confirm Delete")
+</script>
+{% endblock extra_scripts %}
+
+

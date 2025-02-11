@@ -34,6 +34,7 @@
         <th scope="col">Cambio de Medicamento</th>
         <th scope="col">Medico que ordena el Cambio</th>
         <th scope="col">Observación (Firma)</th>
+        <th scope="col">Acciones</th>
      </tr>
     </thead>
     <tbody>
@@ -46,6 +47,10 @@
             <td>{{ medication.med_change }}</td>
             <td>{{ medication.referer }}</td>
             <td>{{ medication.med_observation }}</td>
+            <td>
+                <a href="{% url 'emr:medication_update' medication.id %}">Editar</a>
+                <a href="{% url 'emr:medication_delete' medication.id %}">Eliminar</a>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

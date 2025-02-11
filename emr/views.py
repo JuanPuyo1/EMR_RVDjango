@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, View, UpdateView 
+from django.views.generic import ListView, CreateView, View, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
 from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm, TherapyMedicalValorationForm, FoodIngestionForm
@@ -146,6 +146,23 @@ class MedInventoryView(PatientRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+
+class MedUpdateView(PatientRequiredMixin, UpdateView):
+    model = Medication
+    form_class = MedicationForm
+    template_name = 'emr/medication_inventory_form.html'
+    success_url = reverse_lazy('emr:medication_inventory')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['patient'] = self.patient
+        return context
+
+
+class MedDeleteView(PatientRequiredMixin, DeleteView):
+    model = Medication
+    template_name = 'emr/medication_inventory_confirm_delete.html'
+    success_url = reverse_lazy('emr:medication_inventory')
 
 
 
@@ -303,6 +320,17 @@ class FoodIngestionFormView(PatientRequiredMixin, View):
             form.instance.patient = self.patient
             form.save()
             return redirect('emr:food_ingestion_list')
+        
+class FoodIngestionUpdateView(PatientRequiredMixin, UpdateView):
+    model = FoodIngestion
+    form_class = FoodIngestionForm
+    template_name = 'emr/food_ingestion_form.html'
+    success_url = reverse_lazy('emr:food_ingestion_list')
+
+class FoodIngestionDeleteView(PatientRequiredMixin, DeleteView):
+    model = FoodIngestion
+    template_name = 'emr/food_ingestion_confirm_delete.html'
+    success_url = reverse_lazy('emr:food_ingestion_list')
 
 '''
 
