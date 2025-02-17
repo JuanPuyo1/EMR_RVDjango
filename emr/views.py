@@ -3,7 +3,7 @@ from django.views.generic import ListView, CreateView, View, UpdateView, DeleteV
 from django.urls import reverse_lazy
 from .models import Medication, Patient, MedicationControl, ArterialPressure, FoodIngestion, TherapyMedicalRecord, FoodDaily, NurseCarerRecord, MedicalRecord, TherapyMedicalValoration
 from .forms import MedicationForm, MedicationControlForm, ArterialPressureForm, TherapyMedicalRecordForm, FoodDailyForm, NurseCarerRecordForm, MedicalRecordForm, TherapyMedicalValorationForm, FoodIngestionForm
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -185,18 +185,23 @@ class MedControlView(PatientRequiredMixin, View):
         
         # Get all medications
         medications = Medication.objects.all()
+        
+        
         # Get records for the specified week
         records = MedicationControl.objects.filter(
-            control_date__range=(start_of_week, end_of_week),
             patient=self.patient
         )
+        
+        
         # Organize records by day
         weekly_data = {day: [] for day in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]}
         for record in records:
             weekday = record.control_date.weekday()
-            if weekday < 5:  # Only process Monday through Friday
+            print(weekday)
+            if weekday < 7:  # Only process Monday through
                 weekly_data[list(weekly_data.keys())[weekday]].append(record)
         
+        print(weekly_data)
         # Format dates for display
         week_display = {
             'start': start_of_week.strftime('%d/%m/%Y'),
@@ -206,6 +211,7 @@ class MedControlView(PatientRequiredMixin, View):
         
         context = {
             'medications': medications,
+            'records': records,
             'weekly_data': weekly_data,
             'week_display': week_display,
             'patient': self.patient
@@ -268,6 +274,22 @@ class ArterialPressureFormView(PatientRequiredMixin, View):
             form.save()
             return redirect('emr:arterial_pressure_list')
 
+class ArterialPressureUpdateView(PatientRequiredMixin, UpdateView):
+    model = ArterialPressure
+    form_class = ArterialPressureForm
+    template_name = 'emr/arterial_pressure_form.html'
+    success_url = reverse_lazy('emr:arterial_pressure_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['patient'] = self.patient
+        return context
+
+class ArterialPressureDeleteView(PatientRequiredMixin, DeleteView):
+    model = ArterialPressure
+    template_name = 'emr/arterial_pressure_confirm_delete.html'
+    success_url = reverse_lazy('emr:arterial_pressure_list')
+
 
 '''
 
@@ -326,6 +348,11 @@ class FoodIngestionUpdateView(PatientRequiredMixin, UpdateView):
     form_class = FoodIngestionForm
     template_name = 'emr/food_ingestion_form.html'
     success_url = reverse_lazy('emr:food_ingestion_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['patient'] = self.patient
+        return context
 
 class FoodIngestionDeleteView(PatientRequiredMixin, DeleteView):
     model = FoodIngestion

@@ -30,10 +30,14 @@ urlpatterns = [
 
     path('arterial_pressure_form/', views.ArterialPressureFormView.as_view(), name='arterial_pressure_form'),
     path('arterial_pressure_list/', views.ArterialPressureView.as_view(), name='arterial_pressure_list'),
-
+    path('arterial_pressure_form/<int:pk>/', views.ArterialPressureUpdateView.as_view(), name='arterial_pressure_update'),
+    path('arterial_pressure_form/<int:pk>/delete/', views.ArterialPressureDeleteView.as_view(), name='arterial_pressure_delete'),
 
     path('food_ingestion_list/', views.FoodIngestionView.as_view(), name='food_ingestion_list'),
     path('food_ingestion_form/', views.FoodIngestionFormView.as_view(), name='food_ingestion_form'),
+    path('food_ingestion_form/<int:pk>/', views.FoodIngestionUpdateView.as_view(), name='food_ingestion_update'),
+    path('food_ingestion_form/<int:pk>/delete/', views.FoodIngestionDeleteView.as_view(), name='food_ingestion_delete'),
+    
     path('food_daily_list/', views.FoodDailyView.as_view(), name='food_daily_list'),
     path('food_daily_form/', views.FoodDailyFormView.as_view(), name='food_daily_form'),
 
