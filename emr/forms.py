@@ -136,7 +136,7 @@ class TherapyMedicalRecordForm(forms.ModelForm):
             'record_observation': 'Agregue observaciones adicionales o escriba su nombre(firma)',
         }
         widgets = {
-            'diagnosis': forms.Select(attrs={'class': 'form-control'}),
+            'diagnosis': forms.Textarea(attrs={'class': 'form-control'}),
             'therapy': forms.Select(attrs={'class': 'form-control'}),
             'record_date': forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-control"},
                 format="%Y-%m-%dT%H:%M",),

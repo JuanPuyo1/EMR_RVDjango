@@ -10,20 +10,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
     >
-    <style>
-      :root {
-          --background-color: white !important;
-      }
-      
-      body {
-          background-color: white !important;
-      }
-      
-      details.dropdown > ul {
-          background-color: white !important;
-      }
-      
-  </style>
+   
     {% block custom_css %}
     {% endblock custom_css %}
 </head>
@@ -75,20 +62,30 @@
       {% if messages %}
       <div class="messages">
           {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">
+          <div class="error-message" style="color: red;">
               {{ message }}
           </div>
           {% endfor %}
       </div>
         {% endif %}
         
+        <nav>
+          <ul>
+            <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+            <li><a href="#" data-theme-switcher="light">Light</a></li>
+            <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+          </ul>
+        </nav>
+
         {% block breadcrumb %}
         {% endblock breadcrumb %}
+
         {% block content %}
 
         {% endblock content %}
     </main>
 </body>    
+<script src="{% static 'minimal-time-switcher.js' %}"></script>
 {% block extra_scripts %}
 {% endblock extra_scripts %}
 </html>

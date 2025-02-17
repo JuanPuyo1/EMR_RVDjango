@@ -17,6 +17,7 @@
 
 <h4>Por favor, seleccione un paciente</h4>
 
+
 <form id="patient-form" method="POST">
     {% csrf_token %}
     <select name="patient_id" id="patient-select" onchange="this.form.submit()">

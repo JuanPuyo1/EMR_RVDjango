@@ -65,6 +65,9 @@ class Medication(models.Model):
     referer = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True, blank=True)
     med_observation = models.TextField()
 
+    def __str__(self):
+        return self.med_name + " " + self.med_presentation + " " + self.med_quantity
+
 class ArterialPressure(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
     arterial_pressure = models.CharField(max_length=100)
@@ -81,6 +84,8 @@ class MedicationControl(models.Model):
     control_location = models.CharField(max_length=100)
     control_observation = models.TextField()
 
+    def __str__(self):
+        return self.med.med_name + " " + self.control_date.strftime('%d/%m/%Y')
 
 class FoodIngestion(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)

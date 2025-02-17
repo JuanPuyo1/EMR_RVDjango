@@ -27,6 +27,7 @@
                 <th>Saturación de Oxígeno</th>
                 <th>Temperatura</th>
                 <th>Observaciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +39,10 @@
                     <td>{{ arterial_pressure.saturation }}</td>
                     <td>{{ arterial_pressure.temperature }}</td>
                     <td>{{ arterial_pressure.observation }}</td>
+                    <td>
+                        <a href="{% url 'emr:arterial_pressure_update' arterial_pressure.id %}">Editar</a>
+                        <a href="{% url 'emr:arterial_pressure_delete' arterial_pressure.id %}">Eliminar</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
