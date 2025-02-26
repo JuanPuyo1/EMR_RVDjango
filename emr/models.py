@@ -43,7 +43,7 @@ class TherapyMedicalValoration(models.Model):
 class TherapyMedicalRecord(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     record_date = models.DateTimeField()
-    diagnosis = models.ForeignKey(Diagnosis, on_delete=models.DO_NOTHING, null=True, blank=True)
+    diagnosis = models.TextField(null=True, blank=True)
     therapy = models.ForeignKey(Therapy, on_delete=models.DO_NOTHING, null=True, blank=True)
     record_analysis = models.TextField(null=True, blank=True)  
     record_therapy = models.TextField(null=True, blank=True)

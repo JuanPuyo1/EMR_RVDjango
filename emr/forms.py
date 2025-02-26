@@ -148,7 +148,6 @@ class TherapyMedicalRecordForm(forms.ModelForm):
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.fields['diagnosis'].queryset = Diagnosis.objects.all().order_by('diagnosis_name')
             self.fields['therapy'].queryset = Therapy.objects.all().order_by('therapy_name')
             self.fields['record_date'].initial = datetime.now().strftime("%Y-%m-%dT%H:%M")
 

@@ -76,10 +76,15 @@ class TherapyMedicalRecordFormView(PatientRequiredMixin, View):
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            print("Form is valid")
             form.instance.patient = self.patient
             form.save()
             return redirect('emr:medical_record_list')
 
+        return render(request, self.template_name, {
+            'form': form,
+            'patient': self.patient
+        })
 
 class TherapyMedicalRecordUpdateFormView(PatientRequiredMixin, UpdateView):
 
