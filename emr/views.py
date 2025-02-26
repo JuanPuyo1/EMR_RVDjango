@@ -183,13 +183,18 @@ class MedControlView(PatientRequiredMixin, View):
         start_of_week = base_monday + timedelta(weeks=week_offset)
         end_of_week = start_of_week + timedelta(days=6)  # Friday (4 days after Monday)
         
+        start_of_week = datetime.combine(start_of_week, datetime.min.time())
+        end_of_week = datetime.combine(end_of_week, datetime.max.time())
+        print(start_of_week, end_of_week)
+
         # Get all medications
         medications = Medication.objects.all()
         
         
         # Get records for the specified week
         records = MedicationControl.objects.filter(
-            patient=self.patient
+            patient=self.patient,
+            control_date__range=(start_of_week, end_of_week)
         )
         
         
