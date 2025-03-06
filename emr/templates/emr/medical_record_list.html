@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Registro de Historias Clínicas
+{% endblock %}
+
+  
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ul>
+            <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+            <li>Registro de Historias Clínicas</li>
+        </ul>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Registro de Historias Clínicas para {{ patient.name }}</h1>
+
+
+<div class="d-flex justify-content-end">
+    <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:medical_record_form' %}'">Agregar Registro</button>
+</div>
+
+<div class="overflow-auto">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medical_record in medical_records %}
+                <tr>
+                    <td>{{ medical_record.medical_record_date }}</td>
+                    <td>{{ medical_record.medical_record_reason }}</td>
+                    <td>
+                        <a href="{% url 'emr:medical_record_detail' medical_record.id %}" class="btn btn-primary">Ver</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

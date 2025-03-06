@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+Agregar Nota de Enfermería-Cuidadora
+{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+        <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+        <li><a href="{% url 'emr:nurse_carer_record_list' %}">Notas de Enfermería-Cuidadora</a></li>
+        <li>Agregar Nota</li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>Agregar Nota de Enfermería-Cuidadora para {{ patient.name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+Notas de Enfermería para {{ patient.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+        <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+        <li>Notas de Enfermería</li>
+    </ul>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>Notas de Enfermería para {{ patient.name }}</h1>
+<div class="d-flex justify-content-end">
+<button class="secondary" onclick="window.location.href='{% url 'emr:nurse_carer_record_form' %}'">Agregar Nota</button>
+</div>
+
+<span id="currentWeekDisplay" class="mx-3">
+    Dia {{ day_display.start }}
+</span>
+<div role="group">
+   
+       
+            <button id="prevWeek" class="btn btn-primary">&lt; Dia Anterior</button>
+            
+            <button id="nextWeek" class="btn btn-primary">Siguiente Dia &gt;</button>
+       
+</div>
+
+<div class="overflow-auto">
+<table>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Observación</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.nurse_carer_record_date }}</td>
+            <td>{{ record.nurse_carer_record_type }}</td>
+            <td>{{ record.nurse_carer_record_observation }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentOffset = {{ day_display.offset }};
+        
+        document.getElementById('prevWeek').addEventListener('click', function() {
+            window.location.href = `?day=${currentOffset - 1}`;
+        });
+        
+        document.getElementById('nextWeek').addEventListener('click', function() {
+            window.location.href = `?day=${currentOffset + 1}`;
+        });
+    });
+</script>
+{% endblock extra_scripts %}

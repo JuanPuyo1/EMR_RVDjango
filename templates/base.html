@@ -4,25 +4,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block title %}
-    {% endblock title %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+   
     {% block custom_css %}
     {% endblock custom_css %}
 </head>
 <body>
-    <head>
+
+    {% if user.is_authenticated %}
+    
+    <header class="container">
         <nav>
             <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'medical_record' %}">Medical Record</a></li>
+              <li><strong>SISTEMA DE GESTIÓN</strong></li>
             </ul>
+            <ul dir="rtl">
+              <li>
+                <details class="dropdown">
+                  <summary>Enfermería</summary>
+                  <ul dir="rtl">
+                    <li><a href="{% url 'emr:medication_control_list' %}">Control de Medicamentos</a></li>
+                    <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+                    <li><a href="{% url 'emr:arterial_pressure_list' %}">Registro de Signos Vitales</a></li>
+                    <li><a href="{% url 'emr:food_ingestion_list' %}">Ingeridos/Eliminados</a></li>
+                    <li><a href="{% url 'emr:food_daily_list' %}">Registro diario de Alimentos</a></li>
+                    <li><a href="{% url 'emr:nurse_carer_record_list' %}">Notas de Enfermería</a></li>
+                  </ul>
+              </details>
+              </li>
+              <li>
+                <details class="dropdown">
+                  <summary>Terapias</summary>
+                  <ul dir="rtl">
+                    <li><a href="{% url 'emr:therapy_medical_record_list' %}">Registrar Evolución</a></li>
+                    <li><a href="{% url 'emr:therapy_valoration_list' %}">Registrar Valoración</a></li>
+                </ul>
+              </details>
+              </li>
+              <li>
+                <details class="dropdown">
+                  <summary>MedGen</summary>
+                  <ul dir="rtl">
+                    <li><a href="{% url 'emr:medical_record_list' %}">Registro de Historia Clínica</a></li>
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </nav>
+    </header>
+    {% endif %}
+    <main class="container">
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+          <div class="error-message" style="color: red;">
+              {{ message }}
+          </div>
+          {% endfor %}
+      </div>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+        <nav>
+          <ul>
+            <li><a href="#" data-theme-switcher="auto">Auto</a></li>
+            <li><a href="#" data-theme-switcher="light">Light</a></li>
+            <li><a href="#" data-theme-switcher="dark">Dark</a></li>
+          </ul>
         </nav>
-    </head>
-    {% block content %}
-    {% endblock content %}  
+        {% endif %}
 
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
 
+        {% block content %}
 
-</body>
+        {% endblock content %}
+    </main>
+</body>    
+<script src="{% static 'minimal-time-switcher.js' %}"></script>
+{% block extra_scripts %}
+{% endblock extra_scripts %}
 </html>

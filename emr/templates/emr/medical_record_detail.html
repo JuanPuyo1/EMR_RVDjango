@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+<h1>Historia Clínica</h1>
+{% endblock title %}
+
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medical_record_list' %}">Historia Clínica</a></li>
+      <li><a href="{% url 'emr:medical_record_detail' medical_record_id=medical_record.id %}">Detalles de la Historia Clínica</a></li>
+    </ul>
+
+
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<h1>Detalles de la Historia Clínica del {{ medical_record.medical_record_date }} del paciente {{ medical_record.patient.name }}</h1>
+
+
+
+<div class="overflow-auto">
+<input type="text" value="Fecha: {{ medical_record.medical_record_date }}" readonly>
+<input type="textArea" value="Motivo: {{ medical_record.medical_record_reason }}" readonly>
+<input type="textArea" value="Estado Actual: {{ medical_record.medical_record_actual_state }}" readonly>
+<input type="textArea" value="Análisis: {{ medical_record.medical_record_analysis }}" readonly>
+
+<input type="textArea" value="Plan de Recomendación: {{ medical_record.medical_record_recommendation_plan }}" readonly>
+<input type="textArea" value="Signos Vitales: {{ medical_record.medical_record_vital_signs }}" readonly>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Presión Arterial
+{% endblock %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:arterial_pressure_list' %}">Presión Arterial</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:arterial_pressure_form' %}'">Agregar Medición</button>
+
+    <h1>Registro de Signos Vitales para {{ patient.name }}</h1>
+    <div class="overflow-auto">
+        <table class="table">
+            <thead>
+                <tr>
+                <th>Fecha y Hora</th>
+                <th>Presión Arterial</th>
+                <th>Frecuencia Cardiaca</th>
+                <th>Saturación de Oxígeno</th>
+                <th>Temperatura</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for arterial_pressure in arterial_pressures %}
+                <tr>
+                    <td>{{ arterial_pressure.arterial_pressure_date }}</td>
+                    <td>{{ arterial_pressure.arterial_pressure }}</td>
+                    <td>{{ arterial_pressure.heart_rate }}</td>
+                    <td>{{ arterial_pressure.saturation }}</td>
+                    <td>{{ arterial_pressure.temperature }}</td>
+                    <td>{{ arterial_pressure.observation }}</td>
+                    <td>
+                        <a href="{% url 'emr:arterial_pressure_update' arterial_pressure.id %}">Editar</a>
+                        <a href="{% url 'emr:arterial_pressure_delete' arterial_pressure.id %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Medical Record
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:therapy_medical_record_list' %}">Formulario de Registro Terapéutico</a></li>
+      <li><a href="{% url 'emr:therapy_medical_record_form' %}">Registro de Terapia</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <h1>Registro de Terapia</h1>
+    <label for="patient_id">Paciente</label>
+    <input readonly name="patient_id" value="{{ patient.name }}">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+{% endblock content %}

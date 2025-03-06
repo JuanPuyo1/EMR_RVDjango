@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    Lista de Valoración de Terapia
+{% endblock %}
+
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:therapy_valoration_list' %}">Lista de Valoración de Terapia</a></li>
+    </ul>
+  </nav>
+
+
+{% endblock breadcrumb %}
+
+{% block content %}
+
+
+<h1>Lista de Valoración de Terapia para {{ patient.name }}</h1>
+
+<button class="btn btn-primary" onclick="window.location.href='{% url 'emr:therapy_valoration_form' %}'">Registrar Valoración</button>
+
+
+<div class="overflow-auto">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Motivo de la Consulta</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for therapy_medical_valoration in therapy_medical_valoration_list %}
+                <tr>
+                    <td>{{ therapy_medical_valoration.therapy_medical_valoration_date }}</td>
+                    <td>{{ therapy_medical_valoration.therapy_medical_valoration_reason }}</td>
+                    <td>
+                        <a href="{% url 'emr:therapy_medical_valoration_form' therapy_medical_valoration.id %}" class="btn btn-primary">Ver</a>
+                    </td> 
+                </tr>
+            {% endfor %}
+        </tbody>
+
+{% endblock %}
+

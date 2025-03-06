@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Agregar Medición de Presión Arterial
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:arterial_pressure_list' %}">Presión Arterial</a></li>
+      <li class="breadcrumb-item active">Agregar Medición de Presión Arterial</li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h1>Agregar Medición de Presión Arterial</h1>
+
+<label for="patient-name">Paciente:</label>
+<input type="text" value="{{ patient.name }}" readonly>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+{% endblock content %}

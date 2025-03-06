@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h1>Inventario de Medicamentos</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+    </ul>
+  </nav>
+
+{% endblock breadcrumb %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end">
+<button class="secondary" onclick="window.location.href='{% url 'emr:medication_form' %}'">Agregar Medicamento</button>
+</div>
+
+<h1>Inventario de Medicamentos para {{ patient.name }}</h1>
+
+<div class="overflow-auto">
+<table>
+    <thead>
+      <tr>
+        <th scope="col">Nombre Medicamento</th>
+        <th scope="col">Presentación</th>
+        <th scope="col">Cantidad Recibida</th>
+        <th scope="col">Fecha de Entrega</th>
+        <th scope="col">Cambio de Medicamento</th>
+        <th scope="col">Medico que ordena el Cambio</th>
+        <th scope="col">Observación (Firma)</th>
+        <th scope="col">Acciones</th>
+     </tr>
+    </thead>
+    <tbody>
+        {% for medication in medications %}
+        <tr>
+            <td>{{ medication.med_name }}</td>
+            <td>{{ medication.med_presentation }}</td>
+            <td>{{ medication.med_quantity }}</td>
+            <td>{{ medication.med_date }}</td>
+            <td>{{ medication.med_change }}</td>
+            <td>{{ medication.referer }}</td>
+            <td>{{ medication.med_observation }}</td>
+            <td>
+                <a href="{% url 'emr:medication_update' medication.id %}">Editar</a>
+                <a href="{% url 'emr:medication_delete' medication.id %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+    console.log("Medication List")
+</script>
+{% endblock extra_scripts %}

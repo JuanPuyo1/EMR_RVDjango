@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1>Inventario de Medicamentos, Agregar Medicamento</h1>
+{% endblock title %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ul>
+      <li><a href="{% url 'emr:index' %}">Inicio</a></li>
+      <li><a href="{% url 'emr:medication_inventory' %}">Inventario de Medicamentos</a></li>
+    </ul>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+<h1>Inventario de Medicamentos, Agregar Medicamento para {{ patient.name }}</h1>
+
+<label for="patient_name">Paciente:</label>
+<input type="text" id="patient_name" value="{{ patient.name }}" readonly>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    id_med_change = document.getElementById('id_med_change');
+    id_referer = document.getElementById('id_referer');
+    id_med_change.addEventListener('change', function() {
+      if (id_med_change.checked) {
+        id_referer.hidden = false;
+      } else {
+        id_referer.hidden = true;
+      }
+    }); 
+  });
+</script>
+{% endblock extra_scripts %}
