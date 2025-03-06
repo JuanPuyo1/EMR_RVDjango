@@ -17,10 +17,10 @@
     <button class="btn btn-primary" onclick="window.location.href='{% url 'emr:arterial_pressure_form' %}'">Agregar Medición</button>
 
     <h1>Registro de Signos Vitales para {{ patient.name }}</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
+    <div class="overflow-auto">
+        <table class="table">
+            <thead>
+                <tr>
                 <th>Fecha y Hora</th>
                 <th>Presión Arterial</th>
                 <th>Frecuencia Cardiaca</th>
@@ -47,4 +47,5 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
 {% endblock content %}
